@@ -10,7 +10,13 @@
 
 	<resources mapping="/resources/**" location="classpath*:webresources/" />
 
-	<context:component-scan base-package="no.kantega.frisktblodtilhodet.web" />
+    <view-controller path="/" view-name="home"/>
+    <view-controller path="/admin" view-name="admin"/>
 
-    <beans:import resource="classpath*:/applicationContext-jpa.xml" />
+    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/jsp/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+	<context:component-scan base-package="no.kantega.frisktblodtilhodet.web" />
 </beans:beans>

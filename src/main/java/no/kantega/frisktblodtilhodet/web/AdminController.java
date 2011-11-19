@@ -1,6 +1,8 @@
 package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
+import no.kantega.frisktblodtilhodet.model.Avdeling;
+import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
 import no.kantega.frisktblodtilhodet.service.AvdelingRepository;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
@@ -25,12 +27,28 @@ public class AdminController {
     @Autowired
     private PersonRepository personRepository;
 
+    @RequestMapping(value = "/person", method = RequestMethod.POST)
+    public ResponseEntity<Person> savePerson(@ModelAttribute Person person){
+
+        Person save = personRepository.save(person);
+
+        return new ResponseEntity<Person>(save, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/avdeling", method = RequestMethod.POST)
+    public ResponseEntity<Avdeling> saveAvdeling(@ModelAttribute Avdeling avdeling){
+
+        Avdeling save = avdelingRepository.save(avdeling);
+
+        return new ResponseEntity<Avdeling>(save, HttpStatus.CREATED);
+    }
+
     @RequestMapping(value = "/aktivitet", method = RequestMethod.POST)
     public ResponseEntity<Aktivitet> saveAktivitet(@ModelAttribute Aktivitet aktivitet){
 
         Aktivitet save = aktivitetRepository.save(aktivitet);
 
-        return new ResponseEntity<Aktivitet>(save, HttpStatus.OK);
+        return new ResponseEntity<Aktivitet>(save, HttpStatus.CREATED);
     }
 
 }
