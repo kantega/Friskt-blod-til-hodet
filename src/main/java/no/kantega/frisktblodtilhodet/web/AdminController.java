@@ -1,5 +1,6 @@
 package no.kantega.frisktblodtilhodet.web;
 
+import no.kantega.frisktblodtilhodet.editor.BindByIdEditor;
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
 import no.kantega.frisktblodtilhodet.model.Avdeling;
 import no.kantega.frisktblodtilhodet.model.Person;
@@ -10,9 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -26,6 +32,14 @@ public class AdminController {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String admin(Model model){
+        List<Avdeling> avdelinger = avdelingRepository.findAll();
+        model.addAttribute("avdelinger", avdelinger);
+
+        return "admin";
+    }
 
     @RequestMapping(value = "/person", method = RequestMethod.POST)
     public ResponseEntity<Person> savePerson(@ModelAttribute Person person){
@@ -49,6 +63,12 @@ public class AdminController {
         Aktivitet save = aktivitetRepository.save(aktivitet);
 
         return new ResponseEntity<Aktivitet>(save, HttpStatus.CREATED);
+    }
+
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Avdeling.class, new BindByIdEditor(personRepository));
     }
 
 }

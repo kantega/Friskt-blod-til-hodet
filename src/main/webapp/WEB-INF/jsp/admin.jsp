@@ -1,9 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML>
 <html>
 <head>
     <title>Friskt blod til hodet – admin</title>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+    <link rel="shortcut icon" href="/resources/favicon.ico">
 </head>
 <body>
 
@@ -22,6 +24,12 @@
   <form class="adminForm" id="personForm" method="post" action="/admin/person">
       <label for="personname">Personnavn</label>
       <input name="name" id="personname" type="text">
+      <input name="username" id="username" type="text">
+      <select name="avdeling" multiple="false">
+        <c:forEach var="avdeling" items="${avdelinger}">
+            <option value="${avdeling.id}">${avdeling.name}</option>
+        </c:forEach>
+      </select>
       <input type="submit" value="Lagre">
   </form>
 

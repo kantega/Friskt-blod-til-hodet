@@ -32,4 +32,12 @@ public class Person extends AbstractPersistable<Long> {
     public void setAvdeling(Avdeling avdeling) {
         this.avdeling = avdeling;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

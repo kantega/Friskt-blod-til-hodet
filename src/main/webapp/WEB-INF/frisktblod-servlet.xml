@@ -10,8 +10,6 @@
 
 	<resources mapping="/resources/**" location="/webresources/" />
 
-    <view-controller path="/admin" view-name="admin"/>
-
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/jsp/" />
 		<beans:property name="suffix" value=".jsp" />
