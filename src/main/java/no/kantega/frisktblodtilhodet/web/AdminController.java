@@ -33,7 +33,7 @@ public class AdminController {
     @Autowired
     private PersonRepository personRepository;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String admin(Model model){
         List<Avdeling> avdelinger = avdelingRepository.findAll();
         model.addAttribute("avdelinger", avdelinger);

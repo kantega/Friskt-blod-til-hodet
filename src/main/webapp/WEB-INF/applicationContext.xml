@@ -4,7 +4,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <import resource="classpath*:/applicationContext-jpa.xml" />
+
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
         <property name="location" value="classpath:frisktblod.properties" />
     </bean>
+
+    <!--<bean id="wroFilter" class="ro.isdc.wro.http.ConfigurableWroFilter">
+        <property name="debug" value="${wrofilter.debug}"/>
+        <property name="cacheUpdatePeriod" value="${wrofilter.cacheUpdatePeriod}"/>
+        <property name="modelUpdatePeriod" value="${wrofilter.modelUpdatePeriod}"/>
+        <property name="disableCache" value="${wrofilter.disableCache}" />
+        <property name="gzipEnabled" value="${wrofilter.gzipResources}" />
+        <property name="jmxEnabled" value="${wrofilter.jmxEnabled}" />
+    </bean>-->
 </beans>
