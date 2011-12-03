@@ -54,7 +54,7 @@ public class ResourcesController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Aktivitet.class, new BindByIdEditor(personRepository));
+        binder.registerCustomEditor(Aktivitet.class, new BindByIdEditor(aktivitetRepository));
         binder.registerCustomEditor(Person.class, new BindPersonByUsername());
     }
 

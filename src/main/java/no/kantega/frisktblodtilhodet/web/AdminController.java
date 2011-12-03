@@ -68,7 +68,7 @@ public class AdminController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Avdeling.class, new BindByIdEditor(personRepository));
+        binder.registerCustomEditor(Avdeling.class, new BindByIdEditor(avdelingRepository));
     }
 
 }

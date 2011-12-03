@@ -39,6 +39,11 @@
   <form class="adminForm" id="avdelingForm" method="post" action="/admin/avdeling">
       <label for="avdelingname">Avdelingsnavn</label>
       <input name="name" id="acdelingname" type="text">
+      <select name="foreldreAvdeling" multiple="false">
+        <c:forEach var="avdeling" items="${avdelinger}">
+            <option value="${avdeling.id}">${avdeling.name}</option>
+        </c:forEach>
+      </select>
       <input type="submit" value="Lagre">
   </form>
 
