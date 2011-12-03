@@ -8,9 +8,8 @@
 
 	<annotation-driven />
 
-	<resources mapping="/resources/**" location="classpath*:webresources/" />
+	<resources mapping="/resources/**" location="/webresources/" />
 
-    <view-controller path="/" view-name="home"/>
     <view-controller path="/admin" view-name="admin"/>
 
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

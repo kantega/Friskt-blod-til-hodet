@@ -23,6 +23,13 @@ public class UtfortAktivitet extends AbstractPersistable<Long>{
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar time = Calendar.getInstance();
 
+    public UtfortAktivitet() {}
+
+    public UtfortAktivitet(Aktivitet aktivitet, Person person) {
+        this.aktivitet = aktivitet;
+        this.person = person;
+    }
+
 
     public Person getPerson() {
         return person;

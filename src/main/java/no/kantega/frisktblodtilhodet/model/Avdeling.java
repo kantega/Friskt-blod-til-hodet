@@ -4,10 +4,12 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
 public class Avdeling extends AbstractPersistable<Long>{
+    @NotNull
     private String name;
 
     @OneToMany
