@@ -5,9 +5,7 @@
 <html>
 <head>
     <title>Friskt blod til hodet</title>
-    <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
-    <link rel="shortcut icon" href="/resources/favicon.ico">
-    <link href="/resources/css/main.css" rel="stylesheet">
+    <%@include file="include/js.jsp"%>
     <script>
         var username = localStorage.getItem('username');
         if(username == undefined){
@@ -28,13 +26,21 @@
 </head>
 <body>
 
-<div id="aktiviteter">
+<div id="aktiviteter" data-role="page">
+    <div data-role="header">
+        <h1>Friskt blod til hodet</h1>
+        <h2>Velg aktivitet</h2>
+    </div>
     <div id="status"></div>
-    <ul id="aktivitetlist">
-        <c:forEach var="aktivitet" items="${aktiviteter}">
-            <li><a class="aktivitet" id="${aktivitet.id}" href="#">${aktivitet.name}</a></li>
-        </c:forEach>
-    </ul>
+    <div data-role="content">
+        <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="true">
+            <c:forEach var="aktivitet" items="${aktiviteter}">
+                <li><a class="aktivitet" id="${aktivitet.id}" href="#">${aktivitet.name}</a></li>
+            </c:forEach>
+        </ul>
+
+        <a style="margin-top: 2em;" href="/statistikk" data-role="button" data-theme="a">Statistikk</a>
+    </div>
 </div>
 <script>
     $('.aktivitet').click(function(){

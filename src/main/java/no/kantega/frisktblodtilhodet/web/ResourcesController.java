@@ -52,8 +52,7 @@ public class ResourcesController {
 
     @RequestMapping(value = "/doesPersonExist", method = RequestMethod.GET)
     public @ResponseBody Person getPerson(@RequestParam String username){
-        Person byUsername = personRepository.findByUsername(username);
-        return byUsername;
+        return personRepository.findByUsername(username);
     }
 
     @RequestMapping(value = "/velgAvdeling", method = RequestMethod.GET)

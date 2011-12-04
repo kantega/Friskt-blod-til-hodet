@@ -10,6 +10,8 @@
 
 	<resources mapping="/resources/**" location="/webresources/" />
 
+    <view-controller path="/statistikk" view-name="statistikk"/>
+
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/jsp/" />
 		<beans:property name="suffix" value=".jsp" />
