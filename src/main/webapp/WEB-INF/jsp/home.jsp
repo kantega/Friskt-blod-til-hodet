@@ -5,19 +5,24 @@
 <html>
 <head>
     <title>Friskt blod til hodet</title>
-    <script type="text/javascript" src="/resources/jquery.min.js"></script>
+    <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
     <link rel="shortcut icon" href="/resources/favicon.ico">
-    <link href="/resources/main.css" rel="stylesheet">
+    <link href="/resources/css/main.css" rel="stylesheet">
     <script>
         var username = localStorage.getItem('username');
         if(username == undefined){
             username = prompt('Hva er Kantega-brukernavnet ditt?', '');
-            var validUsername = true; // TODO check user, velg avdeling dersom ikke allerede satt
-            if (validUsername) {
-                localStorage.setItem('username', username);
-            } else {
-                alert('Fant ingen bruker med det brukernavnet')
-            }
+
+            $.get('/doesPersonExist', {username:username}, function(person){
+                if (person) {
+                    localStorage.setItem('username', username);
+                    if(!person.avdeling){
+                        document.location = '/velgAvdeling';
+                    }
+                } else {
+                    alert('Fant ingen bruker med det brukernavnet')
+                }
+            }, 'json');
         }
     </script>
 </head>
@@ -27,7 +32,7 @@
     <div id="status"></div>
     <ul id="aktivitetlist">
         <c:forEach var="aktivitet" items="${aktiviteter}">
-           <li><a class="aktivitet" id="${aktivitet.id}" href="#">${aktivitet.name}</a></li>
+            <li><a class="aktivitet" id="${aktivitet.id}" href="#">${aktivitet.name}</a></li>
         </c:forEach>
     </ul>
 </div>

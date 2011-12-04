@@ -2,6 +2,7 @@ package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.editor.BindByIdEditor;
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
+import no.kantega.frisktblodtilhodet.model.Avdeling;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.model.UtfortAktivitet;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
@@ -14,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.beans.PropertyEditorSupport;
 import java.util.List;
@@ -52,9 +50,29 @@ public class ResourcesController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/doesPersonExist", method = RequestMethod.GET)
+    public @ResponseBody Person getPerson(@RequestParam String username){
+        Person byUsername = personRepository.findByUsername(username);
+        return byUsername;
+    }
+
+    @RequestMapping(value = "/velgAvdeling", method = RequestMethod.GET)
+    public String velgAvdeling(Model model){
+        model.addAttribute("avdelinger", avdelingRepository.findAll());
+        return "velgAvdeling";
+    }
+
+    @RequestMapping(value = "/velgAvdeling", method = RequestMethod.POST)
+    public ResponseEntity lagreAvdeling(@RequestParam Person person, @RequestParam Avdeling avdeling){
+        person.setAvdeling(avdeling);
+        personRepository.save(person);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Aktivitet.class, new BindByIdEditor(aktivitetRepository));
+        binder.registerCustomEditor(Avdeling.class, new BindByIdEditor(avdelingRepository));
         binder.registerCustomEditor(Person.class, new BindPersonByUsername());
     }
 
