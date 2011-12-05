@@ -2,7 +2,7 @@ package no.kantega.service;
 
 
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
-import no.kantega.frisktblodtilhodet.model.Avdeling;
+import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.model.UtfortAktivitet;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
@@ -41,18 +41,18 @@ public class ServiceIntegrationTest {
 
     @Test
     public void testSaveAvdeling(){
-        Avdeling avdeling = new Avdeling();
-        avdeling.setName("Webgruppa");
+        Gruppe gruppe = new Gruppe();
+        gruppe.setName("Webgruppa");
 
-        avdeling = avdelingRepository.saveAndFlush(avdeling);
-        assertNotNull(avdeling);
-        assertNotNull(avdeling.getId());
+        gruppe = avdelingRepository.saveAndFlush(gruppe);
+        assertNotNull(gruppe);
+        assertNotNull(gruppe.getId());
     }
 
     @Test
     public void testSaveAndGetAvdeling(){
         testSaveAvdeling();
-        List<Avdeling> all = avdelingRepository.findAll();
+        List<Gruppe> all = avdelingRepository.findAll();
         assertEquals(1, all.size());
     }
     
@@ -78,21 +78,21 @@ public class ServiceIntegrationTest {
         Person person = new Person();
         person.setName("Person");
         testSaveAvdeling();
-        Avdeling avdeling = avdelingRepository.findAll().get(0);
-        person.setAvdeling(avdeling);
+        Gruppe gruppe = avdelingRepository.findAll().get(0);
+        person.setGruppe(gruppe);
 
         person = personRepository.saveAndFlush(person);
         assertNotNull(person);
         assertNotNull(person.getId());
-        assertNotNull(person.getAvdeling());
+        assertNotNull(person.getGruppe());
     }
 
     @Test
     public void testGetPersonsByAvdeling(){
         testSavePerson();
-        Avdeling avdeling = avdelingRepository.findAll().get(0);
+        Gruppe gruppe = avdelingRepository.findAll().get(0);
 
-        List<Person> persons = personRepository.findByAvdeling(avdeling);
+        List<Person> persons = personRepository.findByAvdeling(gruppe);
         assertEquals(1, persons.size());
     }
 

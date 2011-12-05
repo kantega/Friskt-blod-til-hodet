@@ -2,7 +2,7 @@ package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.editor.BindByIdEditor;
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
-import no.kantega.frisktblodtilhodet.model.Avdeling;
+import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
 import no.kantega.frisktblodtilhodet.service.AvdelingRepository;
@@ -35,7 +35,7 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String admin(Model model){
-        List<Avdeling> avdelinger = avdelingRepository.findAll();
+        List<Gruppe> avdelinger = avdelingRepository.findAll();
         model.addAttribute("avdelinger", avdelinger);
 
         return "admin";
@@ -50,11 +50,11 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/avdeling", method = RequestMethod.POST)
-    public ResponseEntity<Avdeling> saveAvdeling(@ModelAttribute Avdeling avdeling){
+    public ResponseEntity<Gruppe> saveAvdeling(@ModelAttribute Gruppe gruppe){
 
-        Avdeling save = avdelingRepository.save(avdeling);
+        Gruppe save = avdelingRepository.save(gruppe);
 
-        return new ResponseEntity<Avdeling>(save, HttpStatus.CREATED);
+        return new ResponseEntity<Gruppe>(save, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/aktivitet", method = RequestMethod.POST)
@@ -68,7 +68,7 @@ public class AdminController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Avdeling.class, new BindByIdEditor(avdelingRepository));
+        binder.registerCustomEditor(Gruppe.class, new BindByIdEditor(avdelingRepository));
     }
 
 }

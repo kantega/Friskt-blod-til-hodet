@@ -18,7 +18,7 @@ public class Person extends AbstractPersistable<Long> {
     private String username;
 
     @ManyToOne
-    private Avdeling avdeling;
+    private Gruppe gruppe;
 
     public String getName() {
         return name;
@@ -28,12 +28,12 @@ public class Person extends AbstractPersistable<Long> {
         this.name = name;
     }
 
-    public Avdeling getAvdeling() {
-        return avdeling;
+    public Gruppe getGruppe() {
+        return gruppe;
     }
 
-    public void setAvdeling(Avdeling avdeling) {
-        this.avdeling = avdeling;
+    public void setGruppe(Gruppe gruppe) {
+        this.gruppe = gruppe;
     }
 
     public String getUsername() {

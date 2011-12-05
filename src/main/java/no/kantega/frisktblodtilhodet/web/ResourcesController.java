@@ -2,7 +2,7 @@ package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.editor.BindByIdEditor;
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
-import no.kantega.frisktblodtilhodet.model.Avdeling;
+import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.model.UtfortAktivitet;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
@@ -62,8 +62,8 @@ public class ResourcesController {
     }
 
     @RequestMapping(value = "/velgAvdeling", method = RequestMethod.POST)
-    public ResponseEntity lagreAvdeling(@RequestParam Person person, @RequestParam Avdeling avdeling){
-        person.setAvdeling(avdeling);
+    public ResponseEntity lagreAvdeling(@RequestParam Person person, @RequestParam Gruppe gruppe){
+        person.setGruppe(gruppe);
         personRepository.save(person);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -71,7 +71,7 @@ public class ResourcesController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Aktivitet.class, new BindByIdEditor(aktivitetRepository));
-        binder.registerCustomEditor(Avdeling.class, new BindByIdEditor(avdelingRepository));
+        binder.registerCustomEditor(Gruppe.class, new BindByIdEditor(avdelingRepository));
         binder.registerCustomEditor(Person.class, new BindPersonByUsername());
     }
 

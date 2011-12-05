@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-public class Avdeling extends AbstractPersistable<Long>{
+public class Gruppe extends AbstractPersistable<Long>{
     @NotNull
     private String name;
 
@@ -17,10 +17,10 @@ public class Avdeling extends AbstractPersistable<Long>{
     private List<Person> persons;
 
     @ManyToOne
-    private Avdeling foreldreAvdeling;
+    private Gruppe foreldreGruppe;
 
     @OneToMany
-    private List<Avdeling> underavdelinger;
+    private List<Gruppe> underavdelinger;
 
     public String getName() {
         return name;
