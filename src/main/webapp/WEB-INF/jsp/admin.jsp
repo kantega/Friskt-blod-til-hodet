@@ -30,10 +30,10 @@
                 <input name="name" id="personname" type="text">
                 <label for="username">Brukernavn</label>
                 <input name="username" id="username" type="text">
-                <label for="avdeling">Avdeling</label>
-                <select id="avdeling" name="avdeling" multiple="false">
-                    <c:forEach var="avdeling" items="${avdelinger}">
-                        <option value="${avdeling.id}">${avdeling.name}</option>
+                <label for="gruppe">Gruppe</label>
+                <select id="gruppe" name="gruppe" multiple="false">
+                    <c:forEach var="gruppe" items="${gruppeer}">
+                        <option value="${gruppe.id}">${gruppe.name}</option>
                     </c:forEach>
                 </select>
                 <input type="submit" value="Lagre">
@@ -41,14 +41,14 @@
 
         </div>
 
-        <div class="admin" id="avdeling">
-            <form class="adminForm" id="avdelingForm" method="post" action="/admin/avdeling">
-                <label for="avdelingname">Avdelingsnavn</label>
-                <input name="name" id="avdelingname" type="text">
-                <label for="foreldreAvdeling">Overavdeling</label>
-                <select id="foreldreAvdeling" name="foreldreAvdeling" multiple="false">
-                    <c:forEach var="avdeling" items="${avdelinger}">
-                        <option value="${avdeling.id}">${avdeling.name}</option>
+        <div class="admin" id="gruppeAdmin">
+            <form class="adminForm" id="gruppeForm" method="post" action="/admin/gruppe">
+                <label for="gruppename">Gruppesnavn</label>
+                <input name="name" id="gruppename" type="text">
+                <label for="foreldreGruppe">Overgruppe</label>
+                <select id="foreldreGruppe" name="foreldreGruppe" multiple="false">
+                    <c:forEach var="gruppe" items="${gruppeer}">
+                        <option value="${gruppe.id}">${gruppe.name}</option>
                     </c:forEach>
                 </select>
                 <input type="submit" value="Lagre">

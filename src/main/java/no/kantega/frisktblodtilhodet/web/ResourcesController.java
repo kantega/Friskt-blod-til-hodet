@@ -6,7 +6,7 @@ import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.model.UtfortAktivitet;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
-import no.kantega.frisktblodtilhodet.service.AvdelingRepository;
+import no.kantega.frisktblodtilhodet.service.GruppeRepository;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
 import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.List;
 public class ResourcesController {
 
     @Autowired
-    private AvdelingRepository avdelingRepository;
+    private GruppeRepository gruppeRepository;
 
     @Autowired
     private AktivitetRepository aktivitetRepository;
@@ -55,14 +55,14 @@ public class ResourcesController {
         return personRepository.findByUsername(username);
     }
 
-    @RequestMapping(value = "/velgAvdeling", method = RequestMethod.GET)
-    public String velgAvdeling(Model model){
-        model.addAttribute("avdelinger", avdelingRepository.findAll());
-        return "velgAvdeling";
+    @RequestMapping(value = "/velgGruppe", method = RequestMethod.GET)
+    public String velgGruppe(Model model){
+        model.addAttribute("gruppeer", gruppeRepository.findAll());
+        return "velgGruppe";
     }
 
-    @RequestMapping(value = "/velgAvdeling", method = RequestMethod.POST)
-    public ResponseEntity lagreAvdeling(@RequestParam Person person, @RequestParam Gruppe gruppe){
+    @RequestMapping(value = "/velgGruppe", method = RequestMethod.POST)
+    public ResponseEntity lagreGruppe(@RequestParam Person person, @RequestParam Gruppe gruppe){
         person.setGruppe(gruppe);
         personRepository.save(person);
         return new ResponseEntity(HttpStatus.OK);
@@ -71,7 +71,7 @@ public class ResourcesController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Aktivitet.class, new BindByIdEditor(aktivitetRepository));
-        binder.registerCustomEditor(Gruppe.class, new BindByIdEditor(avdelingRepository));
+        binder.registerCustomEditor(Gruppe.class, new BindByIdEditor(gruppeRepository));
         binder.registerCustomEditor(Person.class, new BindPersonByUsername());
     }
 

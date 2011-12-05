@@ -17,4 +17,19 @@
         <property name="gzipEnabled" value="${wrofilter.gzipResources}" />
         <property name="jmxEnabled" value="${wrofilter.jmxEnabled}" />
     </bean>-->
+
+    <bean class="no.kantega.frisktblodtilhodet.personimport.KantegaUserImport">
+        <property name="ldapTemplate" >
+            <bean class="org.springframework.ldap.core.LdapTemplate">
+                <property name="contextSource">
+                    <bean class="org.springframework.ldap.core.support.LdapContextSource">
+                        <property name="url" value="ldap://${ldap.host}" />
+                        <property name="password" value="${ldap.adminpassword}" />
+                        <property name="userDn" value="${ldap.adminuser}" />
+                        <property name="base" value="${ldap.users.searchbase}" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
 </beans>

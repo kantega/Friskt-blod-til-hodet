@@ -20,7 +20,7 @@ public class Gruppe extends AbstractPersistable<Long>{
     private Gruppe foreldreGruppe;
 
     @OneToMany
-    private List<Gruppe> underavdelinger;
+    private List<Gruppe> undergrupper;
 
     public String getName() {
         return name;

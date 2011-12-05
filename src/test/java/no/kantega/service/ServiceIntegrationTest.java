@@ -6,7 +6,7 @@ import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.model.UtfortAktivitet;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
-import no.kantega.frisktblodtilhodet.service.AvdelingRepository;
+import no.kantega.frisktblodtilhodet.service.GruppeRepository;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
 import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.junit.Test;
@@ -28,7 +28,7 @@ import static junit.framework.Assert.assertNotNull;
 public class ServiceIntegrationTest {
 
     @Autowired
-    private AvdelingRepository avdelingRepository;
+    private GruppeRepository gruppeRepository;
 
     @Autowired
     private AktivitetRepository aktivitetRepository;
@@ -40,19 +40,19 @@ public class ServiceIntegrationTest {
     private UtfortAktivitetRepository utfortAktivitetRepository;
 
     @Test
-    public void testSaveAvdeling(){
+    public void testSaveGruppe(){
         Gruppe gruppe = new Gruppe();
         gruppe.setName("Webgruppa");
 
-        gruppe = avdelingRepository.saveAndFlush(gruppe);
+        gruppe = gruppeRepository.saveAndFlush(gruppe);
         assertNotNull(gruppe);
         assertNotNull(gruppe.getId());
     }
 
     @Test
-    public void testSaveAndGetAvdeling(){
-        testSaveAvdeling();
-        List<Gruppe> all = avdelingRepository.findAll();
+    public void testSaveAndGetGruppe(){
+        testSaveGruppe();
+        List<Gruppe> all = gruppeRepository.findAll();
         assertEquals(1, all.size());
     }
     
@@ -77,8 +77,8 @@ public class ServiceIntegrationTest {
     public void testSavePerson(){
         Person person = new Person();
         person.setName("Person");
-        testSaveAvdeling();
-        Gruppe gruppe = avdelingRepository.findAll().get(0);
+        testSaveGruppe();
+        Gruppe gruppe = gruppeRepository.findAll().get(0);
         person.setGruppe(gruppe);
 
         person = personRepository.saveAndFlush(person);
@@ -88,11 +88,11 @@ public class ServiceIntegrationTest {
     }
 
     @Test
-    public void testGetPersonsByAvdeling(){
+    public void testGetPersonsByGruppe(){
         testSavePerson();
-        Gruppe gruppe = avdelingRepository.findAll().get(0);
+        Gruppe gruppe = gruppeRepository.findAll().get(0);
 
-        List<Person> persons = personRepository.findByAvdeling(gruppe);
+        List<Person> persons = personRepository.findByGruppe(gruppe);
         assertEquals(1, persons.size());
     }
 
