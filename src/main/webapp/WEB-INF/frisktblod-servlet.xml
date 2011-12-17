@@ -11,6 +11,7 @@
 	<resources mapping="/resources/**" location="/webresources/" />
 
     <view-controller path="/statistikk" view-name="statistikk"/>
+    <view-controller path="/login" view-name="login"/>
 
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/jsp/" />

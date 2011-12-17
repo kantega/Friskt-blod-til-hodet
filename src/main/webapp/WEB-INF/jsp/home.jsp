@@ -9,18 +9,7 @@
     <script>
         var username = localStorage.getItem('username');
         if(username == undefined){
-            username = prompt('Hva er Kantega-brukernavnet ditt?', '');
-
-            $.get('/doesPersonExist', {username:username}, function(person){
-                if (person) {
-                    localStorage.setItem('username', username);
-                    if(!person.avdeling){
-                        document.location = '/velgAvdeling';
-                    }
-                } else {
-                    alert('Fant ingen bruker med det brukernavnet')
-                }
-            }, 'json');
+            window.location = '/login'
         }
     </script>
 </head>
