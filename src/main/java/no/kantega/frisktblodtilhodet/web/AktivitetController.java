@@ -16,7 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class AktivitetController {
@@ -31,12 +33,17 @@ public class AktivitetController {
     private UtfortAktivitetRepository utfortAktivitetRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String getAktiviteter(@RequestParam(required = false, defaultValue = "0") Long utfortaktivitet, Model model){
+    public String getAktiviteter(Model model){
         List<Aktivitet> aktiviteter = aktivitetRepository.findAll();
-        model.addAttribute("aktiviteter", aktiviteter);
-        if(utfortaktivitet != 0){
-            model.addAttribute("utfortaktivitet", utfortaktivitet);
+
+        Map<Aktivitet, Long> aktivitetAndCountByPerson = new HashMap<Aktivitet, Long>();
+        Person person = personRepository.findAll().get(0);
+        for (Aktivitet aktivitet : aktiviteter) {
+            Long countByAktivitetAndPerson = utfortAktivitetRepository.getCountByAktivitetAndPerson(aktivitet, person);
+            aktivitetAndCountByPerson.put(aktivitet, countByAktivitetAndPerson);
         }
+
+        model.addAttribute("aktiviteter", aktivitetAndCountByPerson);
         return "home";
     }
 

@@ -17,25 +17,25 @@
     <div data-role="content">
         <img src="/resources/images/aktiviteter/${aktivitet.name}.png" alt="${aktivitet.name}">
         <form id="aktivitetForm">
-        <c:if test="${aktivitet.aktivitetsType eq 'MengdeAktivitet'}">
-            <div data-role="fieldcontain">
-                <fieldset data-role="controlgroup" data-type="horizontal" >
-                    <label for="mengde">Mengde</label>
-                    <input name="mengde" id="mengde" type="number">
-                </fieldset>
-            </div>
-        </c:if>
-        <c:if test="${aktivitet.aktivitetsType eq 'KonkurranseAktivitet'}">
-            <div data-role="fieldcontain">
-                <fieldset data-role="controlgroup" data-type="horizontal" >
-                    <legend>Resultat</legend>
-                    <input type="radio" name="isWinner" id="isWinner" value="true"/>
-                    <label for="isWinner">Vant</label>
-                    <input type="radio" name="isWinner" id="isNotWinner" value="false"/>
-                    <label for="isNotWinner">Tapte</label>
-                </fieldset>
-            </div>
-        </c:if>
+            <c:if test="${aktivitet.aktivitetsType eq 'MengdeAktivitet'}">
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup" data-type="horizontal" >
+                        <label for="mengde">Mengde</label>
+                        <input name="mengde" id="mengde" type="number">
+                    </fieldset>
+                </div>
+            </c:if>
+            <c:if test="${aktivitet.aktivitetsType eq 'KonkurranseAktivitet'}">
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup" data-type="horizontal" >
+                        <legend>Resultat</legend>
+                        <input type="radio" name="isWinner" id="isWinner" value="true"/>
+                        <label for="isWinner">Vant</label>
+                        <input type="radio" name="isWinner" id="isNotWinner" value="false"/>
+                        <label for="isNotWinner">Tapte</label>
+                    </fieldset>
+                </div>
+            </c:if>
             <input type="hidden" name="aktivitet" value="${aktivitet.id}">
             <input type="hidden" name="person" id="person" value="">
         </form>
@@ -44,19 +44,21 @@
             <a href="/?utfortaktivitet=${aktivitet.id}" data-role="button" id="ok">Ok</a>
         </div>
     </div>
+    <script>
+        $(function(){
+            $('#ok').click(function(){
+                var personId = localStorage.getItem('username');
+                $("#person").val(personId);
+                $.post('/aktiviteter/utfortAktivitet', $("#aktivitetForm").serialize(), function(data, textStatus, jqXHR){
+                    if(textStatus != 'success'){
+                        alert("Noe feilet :'(")
+                    }
+                });
+                return true;
+            });
+        });
+    </script>
     <%@include file="include/footer.jsp"%>
 </div>
-<script>
-    $('#ok').click(function(){
-        var personId = localStorage.getItem('username');
-        $("#person").val(personId);
-        $.post('/aktiviteter/utfortAktivitet', $("#aktivitetForm").serialize(), function(data, textStatus, jqXHR){
-            if(textStatus != 'success'){
-                alert("Noe feilet :'(")
-            }
-        });
-        return true;
-    })
-</script>
 </body>
 </html>

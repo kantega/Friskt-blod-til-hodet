@@ -24,7 +24,7 @@
     <div data-role="content">
         <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="true">
             <c:forEach var="aktivitet" items="${aktiviteter}">
-                <li><a class="aktivitet" id="${aktivitet.id}" href="/aktiviteter/${aktivitet.id}">${aktivitet.name}</a></li>
+                <li><a class="aktivitet" id="${aktivitet.key.id}" href="/aktiviteter/${aktivitet.key.id}">${aktivitet.key.name}</a> ${aktivitet.value}</li>
             </c:forEach>
         </ul>
     </div>
