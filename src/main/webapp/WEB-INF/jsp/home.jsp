@@ -24,30 +24,11 @@
     <div data-role="content">
         <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="true">
             <c:forEach var="aktivitet" items="${aktiviteter}">
-                <li><a class="aktivitet" id="${aktivitet.id}" href="#">${aktivitet.name}</a></li>
+                <li><a class="aktivitet" id="${aktivitet.id}" href="/aktiviteter/${aktivitet.id}">${aktivitet.name}</a></li>
             </c:forEach>
         </ul>
-
-
     </div>
-    <div id="footer">
-        <div data-role="controlgroup" data-type="horizontal">
-            <a href="/" data-role="button" data-theme="a">Aktiviteter</a>
-            <a href="/statistikk" data-role="button" data-theme="a">Statistikk</a>
-            <a href="/statistikk" data-role="button" data-theme="a">Herp</a>
-            <a href="/statistikk" data-role="button" data-theme="a">Derp</a>
-        </div>
-    </div>
+    <%@include file="include/footer.jsp"%>
 </div>
-<script>
-    $('.aktivitet').click(function(){
-        var aktivitetId = $(this).attr('id');
-        var personId = localStorage.getItem('username');
-        $.post('/utfortaktivitet', {aktivitet: aktivitetId, person: personId}, function(data, textStatus, jqXHR){
-            $('#status').text(':)');
-        });
-        return false;
-    })
-</script>
 </body>
 </html>
