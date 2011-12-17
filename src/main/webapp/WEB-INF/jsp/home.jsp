@@ -6,6 +6,7 @@
 <head>
     <title>Friskt blod til hodet</title>
     <%@include file="include/js.jsp"%>
+    <script type="text/javascript" src="/resources/js/jquery-ui-1.8.16.custom.min.js"></script>
     <script>
         var username = localStorage.getItem('username');
         if(username == undefined){
@@ -24,10 +25,34 @@
     <div data-role="content">
         <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="true">
             <c:forEach var="aktivitet" items="${aktiviteter}">
-                <li><a class="aktivitet" id="${aktivitet.key.id}" href="/aktiviteter/${aktivitet.key.id}">${aktivitet.key.name}</a> ${aktivitet.value}</li>
+                <li>
+                    <a class="aktivitet" id="${aktivitet.key.id}" href="/aktiviteter/${aktivitet.key.id}">${aktivitet.key.name}</a>
+                    <span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span>
+                </li>
             </c:forEach>
         </ul>
     </div>
+    <script>
+        var urlParam = $.urlParam("utfortaktivitet");
+        var scores = $("span.score");
+        if(urlParam != 0){
+            scores.each(function(index, value){
+                var jqvalue = $(value);
+                if(jqvalue.attr("id") == urlParam){
+                    var score = jqvalue.text();
+                    setTimeout(function(){
+                        jqvalue.text(parseInt(score) + 1);
+                        setTimeout(function(){
+                            jqvalue.switchClass( "scoreIncrement", "score", 1000 );
+                        }, 300);
+                    },1000);
+                    jqvalue.switchClass( "score", "scoreIncrement", 1000 );
+
+                    return false;
+                }
+            })
+        }
+    </script>
     <%@include file="include/footer.jsp"%>
 </div>
 </body>
