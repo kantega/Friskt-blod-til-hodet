@@ -2,6 +2,7 @@ package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.editor.BindByIdEditor;
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
+import no.kantega.frisktblodtilhodet.model.AktivitetType;
 import no.kantega.frisktblodtilhodet.model.Avdeling;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -38,6 +40,11 @@ public class AdminController {
         List<Avdeling> avdelinger = avdelingRepository.findAll();
         model.addAttribute("avdelinger", avdelinger);
 
+        List<String> aktivitetTyper = new LinkedList<String>();
+        for(AktivitetType aktivitetType : AktivitetType.values()){
+            aktivitetTyper.add(aktivitetType.name());
+        }
+        model.addAttribute("aktivitetsTyper", aktivitetTyper);
         return "admin";
     }
 
@@ -64,7 +71,6 @@ public class AdminController {
 
         return new ResponseEntity<Aktivitet>(save, HttpStatus.CREATED);
     }
-
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

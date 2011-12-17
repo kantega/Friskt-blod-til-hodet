@@ -46,10 +46,8 @@ public class AktivitetController {
         return "aktivitet";
     }
 
-    @RequestMapping(value = "/aktiviteter/utfortaktivitet", method = RequestMethod.POST)
-    public ResponseEntity registerAktivitet(@RequestParam Aktivitet aktivitet, @RequestParam Person person){
-
-        UtfortAktivitet utfortAktivitet = new UtfortAktivitet(aktivitet, person);
+    @RequestMapping(value = "/aktiviteter/utfortAktivitet", method = RequestMethod.POST)
+    public ResponseEntity registerAktivitet(@ModelAttribute UtfortAktivitet utfortAktivitet){
         utfortAktivitetRepository.save(utfortAktivitet);
         return new ResponseEntity(HttpStatus.OK);
     }

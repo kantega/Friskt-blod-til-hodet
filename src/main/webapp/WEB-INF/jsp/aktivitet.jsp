@@ -16,6 +16,29 @@
     </div>
     <div data-role="content">
         <img src="/resources/images/aktiviteter/${aktivitet.name}.png" alt="${aktivitet.name}">
+        <form id="aktivitetForm">
+        <c:if test="${aktivitet.aktivitetsType eq 'MengdeAktivitet'}">
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup" data-type="horizontal" >
+                    <label for="mengde">Mengde</label>
+                    <input name="mengde" id="mengde" type="number">
+                </fieldset>
+            </div>
+        </c:if>
+        <c:if test="${aktivitet.aktivitetsType eq 'KonkurranseAktivitet'}">
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup" data-type="horizontal" >
+                    <legend>Resultat</legend>
+                    <input type="radio" name="isWinner" id="isWinner" value="true"/>
+                    <label for="isWinner">Vant</label>
+                    <input type="radio" name="isWinner" id="isNotWinner" value="false"/>
+                    <label for="isNotWinner">Tapte</label>
+                </fieldset>
+            </div>
+        </c:if>
+            <input type="hidden" name="aktivitet" value="${aktivitet.id}">
+            <input type="hidden" name="person" id="person" value="">
+        </form>
         <div data-role="controlgroup" data-type="horizontal">
             <a href="/" data-role="button" id="cancel">Avbryt</a>
             <a href="/?utfortaktivitet=${aktivitet.id}" data-role="button" id="ok">Ok</a>
@@ -25,9 +48,9 @@
 </div>
 <script>
     $('#ok').click(function(){
-        var aktivitetId = ${aktivitet.id};
         var personId = localStorage.getItem('username');
-        $.post('/aktiviteter/utfortaktivitet', {aktivitet: aktivitetId, person: personId}, function(data, textStatus, jqXHR){
+        $("#person").val(personId);
+        $.post('/aktiviteter/utfortAktivitet', $("#aktivitetForm").serialize(), function(data, textStatus, jqXHR){
             if(textStatus != 'success'){
                 alert("Noe feilet :'(")
             }

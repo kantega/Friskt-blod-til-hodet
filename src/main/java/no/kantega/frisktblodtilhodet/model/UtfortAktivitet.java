@@ -23,13 +23,16 @@ public class UtfortAktivitet extends AbstractPersistable<Long>{
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar time = Calendar.getInstance();
 
+    private Boolean isWinner;
+
+    private Integer mengde = 0;
+
     public UtfortAktivitet() {}
 
     public UtfortAktivitet(Aktivitet aktivitet, Person person) {
         this.aktivitet = aktivitet;
         this.person = person;
     }
-
 
     public Person getPerson() {
         return person;
@@ -53,5 +56,21 @@ public class UtfortAktivitet extends AbstractPersistable<Long>{
 
     public void setTime(Calendar time) {
         this.time = time;
+    }
+
+    public Integer getMengde() {
+        return mengde;
+    }
+
+    public void setMengde(Integer mengde) {
+        this.mengde = mengde;
+    }
+
+    public Boolean getWinner() {
+        return isWinner;
+    }
+
+    public void setWinner(Boolean winner) {
+        isWinner = winner;
     }
 }

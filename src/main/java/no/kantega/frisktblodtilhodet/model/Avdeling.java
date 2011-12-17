@@ -37,4 +37,20 @@ public class Avdeling extends AbstractPersistable<Long>{
     public void setPersons(List<Person> persons) {
         this.persons = persons;
     }
+
+    public Avdeling getForeldreAvdeling() {
+        return foreldreAvdeling;
+    }
+
+    public void setForeldreAvdeling(Avdeling foreldreAvdeling) {
+        this.foreldreAvdeling = foreldreAvdeling;
+    }
+
+    public List<Avdeling> getUnderavdelinger() {
+        return underavdelinger;
+    }
+
+    public void setUnderavdelinger(List<Avdeling> underavdelinger) {
+        this.underavdelinger = underavdelinger;
+    }
 }
