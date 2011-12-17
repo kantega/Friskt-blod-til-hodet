@@ -28,7 +28,15 @@
             </c:forEach>
         </ul>
 
-        <a style="margin-top: 2em;" href="/statistikk" data-role="button" data-theme="a">Statistikk</a>
+
+    </div>
+    <div id="footer">
+        <div data-role="controlgroup" data-type="horizontal">
+            <a href="/" data-role="button" data-theme="a">Aktiviteter</a>
+            <a href="/statistikk" data-role="button" data-theme="a">Statistikk</a>
+            <a href="/statistikk" data-role="button" data-theme="a">Herp</a>
+            <a href="/statistikk" data-role="button" data-theme="a">Derp</a>
+        </div>
     </div>
 </div>
 <script>
