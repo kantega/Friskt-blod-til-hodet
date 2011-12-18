@@ -1,5 +1,6 @@
-.scoreIncrement {
+a .scoreIncrement {
     font-size: 1.6em;
+    float: right;
 }
 
 .ui-icon-aktivitet-score {

@@ -44,7 +44,7 @@
                     <input name="username" id="username" type="text">
                     <label for="gruppeInput">Gruppe</label>
                     <select id="gruppeInput" name="gruppe" multiple="false">
-                        <c:forEach var="gruppe" items="${gruppeer}">
+                        <c:forEach var="gruppe" items="${grupper}">
                             <option value="${gruppe.id}">${gruppe.name}</option>
                         </c:forEach>
                     </select>

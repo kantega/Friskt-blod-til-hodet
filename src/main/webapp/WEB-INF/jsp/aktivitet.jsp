@@ -29,9 +29,9 @@
                 <div data-role="fieldcontain">
                     <fieldset data-role="controlgroup" data-type="horizontal" >
                         <legend>Resultat</legend>
-                        <input type="radio" name="isWinner" id="isWinner" value="true"/>
+                        <input type="radio" name="winner" id="isWinner" value="true"/>
                         <label for="isWinner">Vant</label>
-                        <input type="radio" name="isWinner" id="isNotWinner" value="false"/>
+                        <input type="radio" name="winner" id="isNotWinner" value="false"/>
                         <label for="isNotWinner">Tapte</label>
                     </fieldset>
                 </div>

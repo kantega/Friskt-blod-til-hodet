@@ -27,6 +27,8 @@ public class UtfortAktivitet extends AbstractPersistable<Long>{
 
     private Integer mengde = 0;
 
+    private Integer poeng = 1;
+
     public UtfortAktivitet() {}
 
     public UtfortAktivitet(Aktivitet aktivitet, Person person) {
@@ -63,6 +65,7 @@ public class UtfortAktivitet extends AbstractPersistable<Long>{
     }
 
     public void setMengde(Integer mengde) {
+        poeng += mengde;
         this.mengde = mengde;
     }
 
@@ -71,6 +74,17 @@ public class UtfortAktivitet extends AbstractPersistable<Long>{
     }
 
     public void setWinner(Boolean winner) {
+        if(winner) poeng++;
         isWinner = winner;
+    }
+
+    public Integer getPoeng() {
+        poeng = 1 + mengde;
+        if(isWinner) poeng++;
+        return poeng;
+    }
+
+    public void setPoeng(Integer poeng) {
+        this.poeng = poeng;
     }
 }

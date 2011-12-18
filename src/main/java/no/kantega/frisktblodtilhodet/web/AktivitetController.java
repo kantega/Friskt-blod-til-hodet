@@ -33,13 +33,14 @@ public class AktivitetController {
     private UtfortAktivitetRepository utfortAktivitetRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String getAktiviteter(Model model){
+    public String getAktiviteter(@CookieValue("USERNAME") String username, Model model){
         List<Aktivitet> aktiviteter = aktivitetRepository.findAll();
 
         Map<Aktivitet, Long> aktivitetAndCountByPerson = new HashMap<Aktivitet, Long>();
-        Person person = personRepository.findAll().get(0);
+        Person person = personRepository.findByUsername(username);
         for (Aktivitet aktivitet : aktiviteter) {
             Long countByAktivitetAndPerson = utfortAktivitetRepository.getCountByAktivitetAndPerson(aktivitet, person);
+            if(countByAktivitetAndPerson == null) countByAktivitetAndPerson = 0L;
             aktivitetAndCountByPerson.put(aktivitet, countByAktivitetAndPerson);
         }
 
