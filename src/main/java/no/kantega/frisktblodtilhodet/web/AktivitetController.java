@@ -39,7 +39,7 @@ public class AktivitetController {
         Map<Aktivitet, Long> aktivitetAndCountByPerson = new HashMap<Aktivitet, Long>();
         Person person = personRepository.findByUsername(username);
         for (Aktivitet aktivitet : aktiviteter) {
-            Long countByAktivitetAndPerson = utfortAktivitetRepository.getCountByAktivitetAndPerson(aktivitet, person);
+            Long countByAktivitetAndPerson = utfortAktivitetRepository.getPoengByAktivitetAndPerson(aktivitet, person);
             if(countByAktivitetAndPerson == null) countByAktivitetAndPerson = 0L;
             aktivitetAndCountByPerson.put(aktivitet, countByAktivitetAndPerson);
         }
