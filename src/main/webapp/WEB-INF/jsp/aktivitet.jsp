@@ -21,7 +21,7 @@
                 <div data-role="fieldcontain">
                     <fieldset data-role="controlgroup" data-type="horizontal" >
                         <label for="mengde">Mengde</label>
-                        <input name="mengde" id="mengde" type="number">
+                        <input name="mengde" id="mengde" type="number" value="0">
                     </fieldset>
                 </div>
             </c:if>

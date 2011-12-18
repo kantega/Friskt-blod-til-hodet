@@ -26,8 +26,7 @@
         <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="true">
             <c:forEach var="aktivitet" items="${aktiviteter}">
                 <li>
-                    <a class="aktivitet" id="${aktivitet.key.id}" href="/aktiviteter/${aktivitet.key.id}">${aktivitet.key.name}</a>
-                    <span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span>
+                    <a class="aktivitet" id="${aktivitet.key.id}" href="/aktiviteter/${aktivitet.key.id}" data-icon="aktivitet-score" data-iconpos="right">${aktivitet.key.name}<span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span></a>
                 </li>
             </c:forEach>
         </ul>

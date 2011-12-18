@@ -1,3 +1,11 @@
 .scoreIncrement {
     font-size: 1.6em;
 }
+
+.ui-icon-aktivitet-score {
+    background-image: url("app-icon-email.png");
+}
+
+a .score {
+    float: right;
+}
