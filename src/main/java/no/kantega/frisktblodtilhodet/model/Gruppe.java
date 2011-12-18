@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-public class Avdeling extends AbstractPersistable<Long>{
+public class Gruppe extends AbstractPersistable<Long>{
     @NotNull
     private String name;
 
@@ -17,10 +17,10 @@ public class Avdeling extends AbstractPersistable<Long>{
     private List<Person> persons;
 
     @ManyToOne
-    private Avdeling foreldreAvdeling;
+    private Gruppe foreldreGruppe;
 
     @OneToMany
-    private List<Avdeling> underavdelinger;
+    private List<Gruppe> undergrupper;
 
     public String getName() {
         return name;
@@ -38,19 +38,19 @@ public class Avdeling extends AbstractPersistable<Long>{
         this.persons = persons;
     }
 
-    public Avdeling getForeldreAvdeling() {
-        return foreldreAvdeling;
+    public Gruppe getForeldreGruppe() {
+        return foreldreGruppe;
     }
 
-    public void setForeldreAvdeling(Avdeling foreldreAvdeling) {
-        this.foreldreAvdeling = foreldreAvdeling;
+    public void setForeldreGruppe(Gruppe foreldreGruppe) {
+        this.foreldreGruppe = foreldreGruppe;
     }
 
-    public List<Avdeling> getUnderavdelinger() {
-        return underavdelinger;
+    public List<Gruppe> getUndergrupper() {
+        return undergrupper;
     }
 
-    public void setUnderavdelinger(List<Avdeling> underavdelinger) {
-        this.underavdelinger = underavdelinger;
+    public void setUndergrupper(List<Gruppe> undergrupper) {
+        this.undergrupper = undergrupper;
     }
 }

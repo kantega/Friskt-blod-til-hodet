@@ -2,11 +2,11 @@ package no.kantega.service;
 
 
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
-import no.kantega.frisktblodtilhodet.model.Avdeling;
+import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.model.UtfortAktivitet;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
-import no.kantega.frisktblodtilhodet.service.AvdelingRepository;
+import no.kantega.frisktblodtilhodet.service.GruppeRepository;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
 import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.junit.Test;
@@ -18,17 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:applicationContext-jpa.xml"})
+@ContextConfiguration({"classpath*:testContext.xml"})
 @Transactional
 public class ServiceIntegrationTest {
 
     @Autowired
-    private AvdelingRepository avdelingRepository;
+    private GruppeRepository gruppeRepository;
 
     @Autowired
     private AktivitetRepository aktivitetRepository;
@@ -40,19 +41,19 @@ public class ServiceIntegrationTest {
     private UtfortAktivitetRepository utfortAktivitetRepository;
 
     @Test
-    public void testSaveAvdeling(){
-        Avdeling avdeling = new Avdeling();
-        avdeling.setName("Webgruppa");
+    public void testSaveGruppe(){
+        Gruppe gruppe = new Gruppe();
+        gruppe.setName("Webgruppa");
 
-        avdeling = avdelingRepository.saveAndFlush(avdeling);
-        assertNotNull(avdeling);
-        assertNotNull(avdeling.getId());
+        gruppe = gruppeRepository.saveAndFlush(gruppe);
+        assertNotNull(gruppe);
+        assertNotNull(gruppe.getId());
     }
 
     @Test
-    public void testSaveAndGetAvdeling(){
-        testSaveAvdeling();
-        List<Avdeling> all = avdelingRepository.findAll();
+    public void testSaveAndGetGruppe(){
+        testSaveGruppe();
+        List<Gruppe> all = gruppeRepository.findAll();
         assertEquals(1, all.size());
     }
     
@@ -77,22 +78,23 @@ public class ServiceIntegrationTest {
     public void testSavePerson(){
         Person person = new Person();
         person.setName("Person");
-        testSaveAvdeling();
-        Avdeling avdeling = avdelingRepository.findAll().get(0);
-        person.setAvdeling(avdeling);
+        person.setUsername("username" + new Random().nextInt());
+        testSaveGruppe();
+        Gruppe gruppe = gruppeRepository.findAll().get(0);
+        person.setGruppe(gruppe);
 
         person = personRepository.saveAndFlush(person);
         assertNotNull(person);
         assertNotNull(person.getId());
-        assertNotNull(person.getAvdeling());
+        assertNotNull(person.getGruppe());
     }
 
     @Test
-    public void testGetPersonsByAvdeling(){
+    public void testGetPersonsByGruppe(){
         testSavePerson();
-        Avdeling avdeling = avdelingRepository.findAll().get(0);
+        Gruppe gruppe = gruppeRepository.findAll().get(0);
 
-        List<Person> persons = personRepository.findByAvdeling(avdeling);
+        List<Person> persons = personRepository.findByGruppe(gruppe);
         assertEquals(1, persons.size());
     }
 

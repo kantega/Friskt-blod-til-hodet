@@ -13,8 +13,8 @@
                 $.get('/doesPersonExist', {username:username}, function(person){
                     if (person) {
                         localStorage.setItem('username', username);
-                        if(!person.avdeling){
-                            document.location = '/velgAvdeling';
+                        if(!person.gruppe){
+                            document.location = '/velgGruppe';
                         }else{
                             document.location = '/';
                         }
