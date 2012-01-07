@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>Friskt blod til hodet</title>
-    <%@include file="include/js.jsp"%>
+    <%@include file="../include/js.jsp"%>
     <script type="text/javascript" src="/resources/js/flot/jquery.flot.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -17,10 +17,13 @@
 <div data-role="page">
     <div data-role="header">
         <h1>Friskt blod til hodet</h1>
-        <h2>Statistikk</h2>
+        <h2>Highscore</h2>
     </div>
     <div data-role="content">
-
+        <h2><a href="" id="gruppeButton" data-role="button">Totalt</a><a href="" id="aktivitetbutton" data-role="button" data-inline="true">Aktivitet</a></h2>
+        <div id="highscoreList"></div>
+            <%@include file="list.jsp"%>
+        <div id="myStanding"></div>
     </div>
 </div>
 </body>

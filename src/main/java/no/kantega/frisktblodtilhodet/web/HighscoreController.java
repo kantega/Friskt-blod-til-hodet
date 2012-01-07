@@ -3,13 +3,17 @@ package no.kantega.frisktblodtilhodet.web;
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
 import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
+import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
+import no.kantega.frisktblodtilhodet.service.HighscoreService;
 import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/highscore")
@@ -17,10 +21,23 @@ public class HighscoreController {
     @Autowired
     private UtfortAktivitetRepository utfortAktivitetRepository;
 
-    @RequestMapping(value = "/person/{person}")
-    public List getUtforteAktiviteterForPerson(@PathVariable Person person){
+    @Autowired
+    private HighscoreService highscoreService;
 
-        return null;
+    private AktivitetRepository aktivitetRepository;
+
+    @RequestMapping
+    public String index(Model model){
+
+        model.addAttribute("aktiviteter", aktivitetRepository.findAll());
+        return "highscore/highscore";
+    }
+
+    @RequestMapping(value = "/person/{person}")
+    public String getUtforteAktiviteterForPerson(@PathVariable Person person, Model model){
+        Map<Aktivitet, Long> aktivitetAndCountByPerson = highscoreService.getAktivitetAndCountForPerson(person);
+        model.addAttribute("aktivitetAndCount", aktivitetAndCountByPerson);
+        return "highscore/list";
     }
 
     @RequestMapping(value = "/person/{person}/overall")

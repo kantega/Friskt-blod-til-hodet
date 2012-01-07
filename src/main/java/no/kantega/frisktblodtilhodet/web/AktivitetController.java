@@ -40,7 +40,7 @@ public class AktivitetController {
 
         Map<Aktivitet, Long> aktivitetAndCountByPerson = highscoreService.getAktivitetAndCountForPerson(person);
 
-        model.addAttribute("aktiviteter", aktivitetAndCountByPerson);
+        model.addAttribute("aktivitetAndCount", aktivitetAndCountByPerson);
         return "home";
     }
 
