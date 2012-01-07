@@ -9,11 +9,7 @@
     <script type="text/javascript" src="/resources/js/flot/jquery.flot.min.js"></script>
     <script>
         $(document).ready(function() {
-            var placeholder = $("#placeholder");
             var username = localStorage.getItem('username');
-            $.getJSON('statistikk/person/' + username, function(data) {
-                $.plot(placeholder, data, options);
-            });
         });
     </script>
 </head>
@@ -24,7 +20,7 @@
         <h2>Statistikk</h2>
     </div>
     <div data-role="content">
-        <div id="placeholder" style="width: 100%; height:90%;"></div>
+
     </div>
 </div>
 </body>

@@ -10,7 +10,7 @@
 
 	<resources mapping="/resources/**" location="/resources/" />
 
-    <view-controller path="/statistikk" view-name="statistikk"/>
+    <view-controller path="/hignscore" view-name="highscore"/>
     <view-controller path="/login" view-name="login"/>
 
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

@@ -6,6 +6,7 @@ import no.kantega.frisktblodtilhodet.model.Aktivitet;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.model.UtfortAktivitet;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
+import no.kantega.frisktblodtilhodet.service.HighscoreService;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
 import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -32,17 +31,14 @@ public class AktivitetController {
     @Autowired
     private UtfortAktivitetRepository utfortAktivitetRepository;
 
+    @Autowired
+    private HighscoreService highscoreService;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getAktiviteter(@CookieValue("USERNAME") String username, Model model){
-        List<Aktivitet> aktiviteter = aktivitetRepository.findAll();
-
-        Map<Aktivitet, Long> aktivitetAndCountByPerson = new HashMap<Aktivitet, Long>();
         Person person = personRepository.findByUsername(username);
-        for (Aktivitet aktivitet : aktiviteter) {
-            Long countByAktivitetAndPerson = utfortAktivitetRepository.getPoengByAktivitetAndPerson(aktivitet, person);
-            if(countByAktivitetAndPerson == null) countByAktivitetAndPerson = 0L;
-            aktivitetAndCountByPerson.put(aktivitet, countByAktivitetAndPerson);
-        }
+
+        Map<Aktivitet, Long> aktivitetAndCountByPerson = highscoreService.getAktivitetAndCountForPerson(person);
 
         model.addAttribute("aktiviteter", aktivitetAndCountByPerson);
         return "home";
