@@ -4,7 +4,7 @@ import no.kantega.frisktblodtilhodet.model.Aktivitet;
 import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
-import no.kantega.frisktblodtilhodet.service.HighscoreService;
+import no.kantega.frisktblodtilhodet.service.GruppeRepository;
 import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,11 +24,15 @@ public class HighscoreController {
     @Autowired
     private HighscoreService highscoreService;
 
+    @Autowired
     private AktivitetRepository aktivitetRepository;
+
+    @Autowired
+    private GruppeRepository gruppeRepository;
 
     @RequestMapping
     public String index(Model model){
-
+        model.addAttribute("grupper", gruppeRepository.findAllLeafGrupper());
         model.addAttribute("aktiviteter", aktivitetRepository.findAll());
         return "highscore/highscore";
     }

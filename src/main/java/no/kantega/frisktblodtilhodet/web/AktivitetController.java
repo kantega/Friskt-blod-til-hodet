@@ -6,7 +6,6 @@ import no.kantega.frisktblodtilhodet.model.Aktivitet;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.model.UtfortAktivitet;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
-import no.kantega.frisktblodtilhodet.service.HighscoreService;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
 import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +34,14 @@ public class AktivitetController {
     private HighscoreService highscoreService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String getAktiviteter(@CookieValue("USERNAME") String username, Model model){
-        Person person = personRepository.findByUsername(username);
+    public String getAktiviteter(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, Model model){
+        if (!username.equals("")) {
+            Person person = personRepository.findByUsername(username);
 
-        Map<Aktivitet, Long> aktivitetAndCountByPerson = highscoreService.getAktivitetAndCountForPerson(person);
+            Map<Aktivitet, Long> aktivitetAndCountByPerson = highscoreService.getAktivitetAndCountForPerson(person);
 
-        model.addAttribute("aktivitetAndCount", aktivitetAndCountByPerson);
+            model.addAttribute("aktivitetAndCount", aktivitetAndCountByPerson);
+        }
         return "home";
     }
 

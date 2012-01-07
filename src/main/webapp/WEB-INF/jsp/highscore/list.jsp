@@ -6,3 +6,8 @@
         </li>
     </c:forEach>
 </ul>
+<c:if test="${myStanding ne null}">
+    <div id="myStanding">
+        <span id="my">${myStanding}</span>/<span id="total">${total}</span>
+    </div>
+</c:if>

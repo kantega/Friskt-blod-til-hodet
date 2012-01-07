@@ -20,10 +20,21 @@
         <h2>Highscore</h2>
     </div>
     <div data-role="content">
-        <h2><a href="" id="gruppeButton" data-role="button">Totalt</a><a href="" id="aktivitetbutton" data-role="button" data-inline="true">Aktivitet</a></h2>
+        <ul id="velggruppe">
+            <li id="gruppeTotalt"><h3><a href="" class="gruppeButton" data-role="button">Totalt</a></h3></li>
+            <c:forEach var="gruppe" items="${grupper}">
+                <li id="gruppe${gruppe.navn}"><h3><a href="" class="gruppeButton" data-role="button">${gruppe.navn}</a></h3></li>
+            </c:forEach>
+        </ul>
+        <ul id="velgaktivitet">
+            <li id="aktivitetAlle"><h3><a href="" class="aktivitetbutton" data-role="button" data-inline="true">Alle</a></h3></li>
+            <c:forEach var="aktivitet" items="${aktiviteter}">
+                <li id="aktivitet${gruppe.navn}"><h3><a href="" class="aktivitetbutton" data-role="button" data-inline="true">${gruppe.navn}</a></h3></li>
+            </c:forEach>
+        </ul>
+
         <div id="highscoreList"></div>
             <%@include file="list.jsp"%>
-        <div id="myStanding"></div>
     </div>
 </div>
 </body>

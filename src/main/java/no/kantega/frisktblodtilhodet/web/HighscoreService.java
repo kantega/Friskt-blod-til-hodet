@@ -1,15 +1,17 @@
-package no.kantega.frisktblodtilhodet.service;
+package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
 import no.kantega.frisktblodtilhodet.model.Person;
+import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
+import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Component
 public class HighscoreService {
 
     @Autowired
