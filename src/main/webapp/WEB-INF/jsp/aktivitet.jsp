@@ -41,7 +41,7 @@
         </form>
         <div data-role="controlgroup" data-type="horizontal">
             <a href="/" data-role="button" id="cancel">Avbryt</a>
-            <a href="/?utfortaktivitet=${aktivitet.id}" data-role="button" id="ok">Ok</a>
+            <a href="/?utfortaktivitet=${aktivitet.id}" data-ajax="false" data-role="button" id="ok">Ok</a>
         </div>
     </div>
     <script>
