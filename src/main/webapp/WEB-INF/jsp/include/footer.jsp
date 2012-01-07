@@ -3,9 +3,8 @@
     <div data-role="navbar">
         <ul>
             <li><a href="/" data-role="button" data-theme="a">Aktiviteter</a></li>
-            <li><a href="/statistikk" data-role="button" data-theme="a">Statistikk</a></li>
-            <li><a href="/statistikk" data-role="button" data-theme="a">Herp</a></li>
-            <li><a href="/statistikk" data-role="button" data-theme="a">Derp</a></li>
+            <li><a href="/highscore" data-role="button" data-theme="a">Highscore</a></li>
+            <li><a href="/info" data-role="button" data-theme="a">Info</a></li>
         </ul>
     </div>
 </div>

@@ -10,3 +10,18 @@ a .scoreIncrement {
 a .score {
     float: right;
 }
+
+#velggruppe {
+    width: 80%;
+    float: left;
+}
+
+#velgaktivitet {
+    width: 15%;
+    float: right;
+    padding: 0;
+}
+
+ul,li {
+    list-style-type: none;
+}

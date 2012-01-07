@@ -6,12 +6,6 @@
 <head>
     <title>Friskt blod til hodet</title>
     <%@include file="../include/js.jsp"%>
-    <script type="text/javascript" src="/resources/js/flot/jquery.flot.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            var username = localStorage.getItem('username');
-        });
-    </script>
 </head>
 <body>
 <div data-role="page">
@@ -20,22 +14,24 @@
         <h2>Highscore</h2>
     </div>
     <div data-role="content">
-        <ul id="velggruppe">
-            <li id="gruppeTotalt"><h3><a href="" class="gruppeButton" data-role="button">Totalt</a></h3></li>
-            <c:forEach var="gruppe" items="${grupper}">
-                <li id="gruppe${gruppe.navn}"><h3><a href="" class="gruppeButton" data-role="button">${gruppe.navn}</a></h3></li>
-            </c:forEach>
-        </ul>
-        <ul id="velgaktivitet">
-            <li id="aktivitetAlle"><h3><a href="" class="aktivitetbutton" data-role="button" data-inline="true">Alle</a></h3></li>
-            <c:forEach var="aktivitet" items="${aktiviteter}">
-                <li id="aktivitet${gruppe.navn}"><h3><a href="" class="aktivitetbutton" data-role="button" data-inline="true">${gruppe.navn}</a></h3></li>
-            </c:forEach>
-        </ul>
-
+        <nav id="velgHighscore">
+            <ul id="velggruppe">
+                <li data-gruppe="Totalt" class="gruppeButton"><a href="" data-role="button">Totalt</a></li>
+                <c:forEach var="gruppe" items="${grupper}">
+                    <li data-gruppe="${gruppe.name}" class="gruppeButton"><a href="" data-role="button">${gruppe.name}</a></li>
+                </c:forEach>
+            </ul>
+            <ul id="velgaktivitet">
+                <li data-aktivitet="Alle" class="aktivitetbutton"><a href="" data-role="button">Alle</a></li>
+                <c:forEach var="aktivitet" items="${aktiviteter}">
+                    <li data-aktivitet="${aktivitet.name}" class="aktivitetbutton"><a href="" data-role="button" >${aktivitet.name}</a></li>
+                </c:forEach>
+            </ul>
+        </nav>
         <div id="highscoreList"></div>
-            <%@include file="list.jsp"%>
+        <%@include file="list.jsp"%>
     </div>
+    <%@include file="../include/footer.jsp"%>
 </div>
 </body>
 </html>
