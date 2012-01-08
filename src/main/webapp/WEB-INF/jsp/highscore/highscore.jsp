@@ -15,21 +15,40 @@
     </div>
     <div data-role="content">
         <nav id="velgHighscore">
-            <ul id="velggruppe">
-                <li data-gruppe="Totalt" class="gruppeButton"><a href="" data-role="button">Totalt</a></li>
-                <c:forEach var="gruppe" items="${grupper}">
-                    <li data-gruppe="${gruppe.name}" class="gruppeButton"><a href="" data-role="button">${gruppe.name}</a></li>
-                </c:forEach>
-            </ul>
-            <ul id="velgaktivitet">
-                <li data-aktivitet="Alle" class="aktivitetbutton"><a href="" data-role="button">Alle</a></li>
-                <c:forEach var="aktivitet" items="${aktiviteter}">
-                    <li data-aktivitet="${aktivitet.name}" class="aktivitetbutton"><a href="" data-role="button" >${aktivitet.name}</a></li>
-                </c:forEach>
-            </ul>
+            <fieldset data-role="controlgroup" data-type="horizontal">
+                <label for="velggruppe" class="ui-hidden-accessible">Velg gruppe</label>
+                <select id="velggruppe">
+                    <option value="Totalt">Totalt</option>
+                    <option value="Grupper">Grupper</option>
+                    <option value="Mingruppe">Innad i min gruppe</option>
+                </select>
+
+                <label for="velgaktivitet" class="ui-hidden-accessible">Velg aktivitet</label>
+                <select id="velgaktivitet">
+                    <option value="Alle">Alle</option>
+                    <c:forEach var="aktivitet" items="${aktiviteter}">
+                        <option value="${aktivitet.id}">${aktivitet.name}</option>
+                    </c:forEach>
+                </select>
+            </fieldset>
+            <script>
+                var velgAktivitetSelect = $('#velgaktivitet');
+                var velgGruppeSelect = $('#velggruppe');
+
+                var onSelectHandler = function(event){
+                    var gruppe = velgGruppeSelect.val();
+                    var aktivitet = velgAktivitetSelect.val();
+
+                    var url = "highscore/gruppe/" + gruppe + "/" + aktivitet;
+                    $("#highscoreList").load(url);
+                };
+                velgAktivitetSelect.change(onSelectHandler);
+                velgGruppeSelect.change(onSelectHandler);
+            </script>
         </nav>
-        <div id="highscoreList"></div>
-        <%@include file="list.jsp"%>
+        <div id="highscoreList">
+            <%@include file="list.jsp"%>
+        </div>
     </div>
     <%@include file="../include/footer.jsp"%>
 </div>

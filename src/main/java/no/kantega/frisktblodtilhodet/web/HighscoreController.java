@@ -1,18 +1,22 @@
 package no.kantega.frisktblodtilhodet.web;
 
+import no.kantega.frisktblodtilhodet.editor.BindByIdEditor;
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
 import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
 import no.kantega.frisktblodtilhodet.service.GruppeRepository;
+import no.kantega.frisktblodtilhodet.service.PersonRepository;
 import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -28,43 +32,67 @@ public class HighscoreController {
     private AktivitetRepository aktivitetRepository;
 
     @Autowired
+    private PersonRepository personRepository;
+
+    @Autowired
     private GruppeRepository gruppeRepository;
 
     @RequestMapping
     public String index(Model model){
-        model.addAttribute("grupper", gruppeRepository.findAllLeafGrupper());
         model.addAttribute("aktiviteter", aktivitetRepository.findAll());
+
+        Map<Person, Long> scores = highscoreService.getPersonAndScore();
+        model.addAttribute("personAndCount", scores);
         return "highscore/highscore";
     }
 
-    @RequestMapping(value = "/person/{person}")
-    public String getUtforteAktiviteterForPerson(@PathVariable Person person, Model model){
-        Map<Aktivitet, Long> aktivitetAndCountByPerson = highscoreService.getAktivitetAndCountForPerson(person);
-        model.addAttribute("aktivitetAndCount", aktivitetAndCountByPerson);
+    @RequestMapping(value = "/Mingruppe/Alle")
+    public String getForMinGruppe(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, Model model){
+        Person person = personRepository.findByUsername(username);
+        Gruppe gruppe = person.getGruppe();
+        Map<Person, Long> scores = highscoreService.getPersonsAndScoreForGruppe(gruppe);
+        model.addAttribute("personAndCount", scores);
         return "highscore/list";
     }
 
-    @RequestMapping(value = "/person/{person}/overall")
-    public List getOverallForPerson(@PathVariable Person person){
-        Long poengByPerson = utfortAktivitetRepository.getPoengByPerson(person);
-        return null;
+    @RequestMapping(value = "/Mingruppe/{aktivitet}")
+    public String getForAktivitetForMinGruppe(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, @PathVariable Aktivitet aktivitet, Model model){
+        Person person = personRepository.findByUsername(username);
+        Gruppe gruppe = person.getGruppe();
+        Map<Person, Long> scores = highscoreService.getPersonsAndScoreForGruppeAndAktivitet(gruppe, aktivitet);
+        model.addAttribute("personAndCount", scores);
+        return "highscore/list";
     }
 
-    @RequestMapping(value = "/gruppe/{gruppe}/overall")
-    public List getOverallForGruppe(@PathVariable Gruppe gruppe){
-        Long poengByGruppe = utfortAktivitetRepository.getPoengByGruppe(gruppe);
-        return null;
+    @RequestMapping(value = "/Grupper/{aktivitet}")
+    public String getForAktivitetForGrupper(@PathVariable Aktivitet aktivitet, Model model){
+        Map<Gruppe, Long> scores = highscoreService.getGrupperAndScoreForAktivitet(aktivitet);
+        model.addAttribute("personAndCount", scores);
+        return "highscore/list";
     }
 
-    @RequestMapping(value = "/person/{person}/{aktivitet}")
-    public List getForAktivitetForPerson(@PathVariable Person person, @PathVariable Aktivitet aktivitet){
-        Long poengByPerson = utfortAktivitetRepository.getPoengByPerson(person);
-        return null;
+    @RequestMapping(value = "/Grupper/Alle")
+    public String getForAlleForGruppe(Model model){
+        Map<Gruppe, Long> scores = highscoreService.getGrupperAndScoreForAlle();
+        model.addAttribute("personAndCount", scores);
+        return "highscore/list";
     }
 
-    @RequestMapping(value = "/gruppe/{gruppe}/{aktivitet}")
-    public List getForAktivitetForGruppe(@PathVariable Gruppe gruppe, @PathVariable Aktivitet aktivitet){
-        Long poengByGruppe = utfortAktivitetRepository.getPoengByAktivitetAndPersonGruppe(aktivitet, gruppe);
-        return null;
+    @RequestMapping(value = "/Total/Alle")
+    public String getTotalForAlle(Model model){
+        return index(model);
+    }
+
+    @RequestMapping(value = "/Total/{aktivitet}")
+    public String getTotalForAktivitet(@PathVariable Aktivitet aktivitet, Model model){
+        Map<Gruppe, Long> scores = highscoreService.getGruppeAndScore();
+        model.addAttribute("personAndCount", scores);
+        return "highscore/list";
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Aktivitet.class, new BindByIdEditor(aktivitetRepository));
+        binder.registerCustomEditor(Gruppe.class, new BindByIdEditor(gruppeRepository));
     }
 }
