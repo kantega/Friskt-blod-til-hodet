@@ -108,13 +108,18 @@ public class HighscoreService {
         return addResultToMap(q);
     }
 
-    public Map<Person, Long> getPersonsAndScoreForGruppeAndAktivitet(Gruppe gruppe, Aktivitet aktivitet) {
-        Map<Person, Long> personAndScore = new HashMap<Person, Long>();
-        for(Person person : gruppe.getPersons()){
-            Long score = utfortAktivitetRepository.getPoengByAktivitetAndPerson(aktivitet, person);
-            personAndScore.put(person, score);
-        }
-        return personAndScore;
+    public Map<Person, Integer> getPersonsAndScoreForGruppeAndAktivitet(Gruppe gruppe, Aktivitet aktivitet) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object> query = cb.createQuery();
+        Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
+        Root<Person> personfrom = query.from(Person.class);
+        Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
+        Path<Person> person = from.get(UtfortAktivitet_.person);
+
+        Predicate and = cb.and(cb.equal(personfrom.get(Person_.gruppe), gruppe), cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet));
+        CriteriaQuery<Object> q = query.multiselect(sum, person).where(and).orderBy(cb.desc(sum)).groupBy(person);
+
+        return addResultToMap(q);
     }
 
     public Map<Gruppe, Long> getGrupperAndScoreForAktivitet(Aktivitet aktivitet) {

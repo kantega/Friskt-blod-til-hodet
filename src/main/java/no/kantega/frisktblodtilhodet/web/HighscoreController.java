@@ -59,7 +59,7 @@ public class HighscoreController {
     public String getForAktivitetForMinGruppe(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, @PathVariable Aktivitet aktivitet, Model model){
         Person person = personRepository.findByUsername(username);
         Gruppe gruppe = person.getGruppe();
-        Map<Person, Long> scores = highscoreService.getPersonsAndScoreForGruppeAndAktivitet(gruppe, aktivitet);
+        Map<Person, Integer> scores = highscoreService.getPersonsAndScoreForGruppeAndAktivitet(gruppe, aktivitet);
         model.addAttribute("personAndCount", scores);
         return "highscore/list";
     }
