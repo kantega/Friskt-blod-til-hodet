@@ -50,6 +50,15 @@ public class HighscoreService {
         return personAndCount;
     }
 
+    public Map<Person, Long> getPersonsAndScoreForAktivitet(Aktivitet aktivitet) {
+        Map<Person, Long> personAndCount = new HashMap<Person, Long>();
+        for(final Person person : personRepository.findAll()){
+            long count = utfortAktivitetRepository.getPoengByAktivitetAndPerson(aktivitet, person);
+            personAndCount.put(person, count);
+        }
+        return personAndCount;
+    }
+
     public Map<Gruppe, Long> getGruppeAndScore() {
         Map<Gruppe, Long> gruppeAndScore = new HashMap<Gruppe, Long>();
         for(Gruppe gruppe : gruppeRepository.findAll()){
@@ -69,7 +78,7 @@ public class HighscoreService {
     }
 
     public Map<Person, Long> getPersonsAndScoreForGruppeAndAktivitet(Gruppe gruppe, Aktivitet aktivitet) {
-            Map<Person, Long> personAndScore = new HashMap<Person, Long>();
+        Map<Person, Long> personAndScore = new HashMap<Person, Long>();
         for(Person person : gruppe.getPersons()){
             Long score = utfortAktivitetRepository.getPoengByAktivitetAndPerson(aktivitet, person);
             personAndScore.put(person, score);

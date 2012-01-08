@@ -24,8 +24,11 @@ public class ResourcesController {
     private PersonRepository personRepository;
 
     @RequestMapping(value = "/doesPersonExist", method = RequestMethod.GET)
-    public @ResponseBody Person getPerson(@RequestParam String username){
-        return personRepository.findByUsername(username);
+    public @ResponseBody PersonDummy getPerson(@RequestParam String username){
+        Person person = personRepository.findByUsername(username);
+        PersonDummy personDummy = new PersonDummy();
+        personDummy.setGruppe(person.getGruppe().getId());
+        return personDummy;
     }
 
     @RequestMapping(value = "/velgGruppe", method = RequestMethod.GET)
@@ -47,4 +50,15 @@ public class ResourcesController {
         binder.registerCustomEditor(Person.class, new BindPersonByUsername(personRepository));
     }
 
+    private class PersonDummy {
+        private Long gruppe;
+
+        public Long getGruppe() {
+            return gruppe;
+        }
+
+        public void setGruppe(Long gruppe) {
+            this.gruppe = gruppe;
+        }
+    }
 }

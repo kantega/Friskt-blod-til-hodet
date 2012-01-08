@@ -13,13 +13,13 @@ public class Gruppe extends AbstractPersistable<Long>{
     @NotNull
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "gruppe")
     private List<Person> persons;
 
     @ManyToOne
     private Gruppe foreldreGruppe;
 
-    @OneToMany
+    @OneToMany(mappedBy = "foreldreGruppe")
     private List<Gruppe> undergrupper;
 
     public String getName() {

@@ -26,6 +26,6 @@ public interface UtfortAktivitetRepository extends JpaRepository<UtfortAktivitet
     @Query("select sum(ua.poeng) from UtfortAktivitet ua where ua.person.gruppe = :gruppe")
     Long getPoengByGruppe(@Param("gruppe") Gruppe gruppe);
 
-    @Query("select sum(ua.poeng) from UtfortAktivitet ua where ua.aktivitet = :aktivitet and ua.person = :gruppe" )
-    Long getPoengByAktivitetAndGruppe(@Param("aktivitet") Aktivitet aktivitet, @Param("Gruppe") Gruppe gruppe);
+    @Query("select sum(ua.poeng) from UtfortAktivitet ua where ua.aktivitet = :aktivitet and ua.person.gruppe = :gruppe" )
+    Long getPoengByAktivitetAndGruppe(@Param("aktivitet") Aktivitet aktivitet, @Param("gruppe") Gruppe gruppe);
 }

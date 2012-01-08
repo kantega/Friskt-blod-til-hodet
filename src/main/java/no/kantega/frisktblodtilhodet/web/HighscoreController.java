@@ -78,14 +78,14 @@ public class HighscoreController {
         return "highscore/list";
     }
 
-    @RequestMapping(value = "/Total/Alle")
+    @RequestMapping(value = "/Totalt/Alle")
     public String getTotalForAlle(Model model){
         return index(model);
     }
 
-    @RequestMapping(value = "/Total/{aktivitet}")
+    @RequestMapping(value = "/Totalt/{aktivitet}")
     public String getTotalForAktivitet(@PathVariable Aktivitet aktivitet, Model model){
-        Map<Gruppe, Long> scores = highscoreService.getGruppeAndScore();
+        Map<Person, Long> scores = highscoreService.getPersonsAndScoreForAktivitet(aktivitet);
         model.addAttribute("personAndCount", scores);
         return "highscore/list";
     }
