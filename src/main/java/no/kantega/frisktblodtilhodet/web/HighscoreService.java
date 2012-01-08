@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,14 +35,26 @@ public class HighscoreService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Map<Aktivitet, Long> getAktivitetAndCountForPerson(Person person) {
-        List<Aktivitet> aktiviteter = aktivitetRepository.findAll();
-        Map<Aktivitet, Long> aktivitetAndCountByPerson = new HashMap<Aktivitet, Long>();
-        for (Aktivitet aktivitet : aktiviteter) {
-            Long countByAktivitetAndPerson = utfortAktivitetRepository.getPoengByAktivitetAndPerson(aktivitet, person);
-            if(countByAktivitetAndPerson == null) countByAktivitetAndPerson = 0L;
-            aktivitetAndCountByPerson.put(aktivitet, countByAktivitetAndPerson);
+    public Map<Aktivitet, Integer> getAktivitetAndCountForPerson(Person person) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object> cq = cb.createQuery();
+        Root<UtfortAktivitet> from = cq.from(UtfortAktivitet.class);
+
+        Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
+        Path<Person> p = from.get(UtfortAktivitet_.person);
+        Path<Aktivitet> aktivitet = from.get(UtfortAktivitet_.aktivitet);
+
+        CriteriaQuery<Object> multiselect = cq.multiselect(sum, aktivitet).where(cb.equal(p, person)).orderBy(cb.desc(sum)).groupBy(aktivitet);
+
+        TypedQuery<Object> query = entityManager.createQuery(multiselect);
+        List<Object> resultList = query.getResultList();
+
+        Map<Aktivitet, Integer> aktivitetAndCountByPerson = new LinkedHashMap<Aktivitet, Integer>();
+        for (Object o : resultList) {
+            Object[] result = (Object[]) o;
+            aktivitetAndCountByPerson.put((Aktivitet)result[1], (Integer)result[0]);
         }
+
         return aktivitetAndCountByPerson;
     }
 
@@ -51,14 +64,13 @@ public class HighscoreService {
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
         Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
         Path<Person> person = from.get(UtfortAktivitet_.person);
-        CriteriaQuery<Object> select = query.multiselect(sum, person);
-        CriteriaQuery<Object> orderBy = select.orderBy(cb.desc(sum));
-        CriteriaQuery<Object> groupBy = orderBy.groupBy(person);
 
-        TypedQuery<Object> query1 = entityManager.createQuery(groupBy);
+        CriteriaQuery<Object> select = query.multiselect(sum, person).orderBy(cb.desc(sum)).groupBy(person);
+
+        TypedQuery<Object> query1 = entityManager.createQuery(select);
         List<Object> resultList = query1.getResultList();
 
-        Map<Person, Integer> personAndCount = new HashMap<Person, Integer>();
+        Map<Person, Integer> personAndCount = new LinkedHashMap<Person, Integer>();
         for (Object o : resultList) {
             Object[] result = (Object[]) o;
             Integer count = (Integer) result[0];
