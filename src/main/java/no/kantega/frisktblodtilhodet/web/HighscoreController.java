@@ -50,7 +50,7 @@ public class HighscoreController {
     public String getForMinGruppe(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, Model model){
         Person person = personRepository.findByUsername(username);
         Gruppe gruppe = person.getGruppe();
-        Map<Person, Long> scores = highscoreService.getPersonsAndScoreForGruppe(gruppe);
+        Map<Person, Integer> scores = highscoreService.getPersonsAndScoreForGruppe(gruppe);
         model.addAttribute("personAndCount", scores);
         return "highscore/list";
     }
@@ -85,7 +85,7 @@ public class HighscoreController {
 
     @RequestMapping(value = "/Totalt/{aktivitet}")
     public String getTotalForAktivitet(@PathVariable Aktivitet aktivitet, Model model){
-        Map<Person, Long> scores = highscoreService.getPersonsAndScoreForAktivitet(aktivitet);
+        Map<Person, Integer> scores = highscoreService.getPersonsAndScoreForAktivitet(aktivitet);
         model.addAttribute("personAndCount", scores);
         return "highscore/list";
     }

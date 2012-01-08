@@ -67,17 +67,7 @@ public class HighscoreService {
 
         CriteriaQuery<Object> select = query.multiselect(sum, person).orderBy(cb.desc(sum)).groupBy(person);
 
-        TypedQuery<Object> query1 = entityManager.createQuery(select);
-        List<Object> resultList = query1.getResultList();
-
-        Map<Person, Integer> personAndCount = new LinkedHashMap<Person, Integer>();
-        for (Object o : resultList) {
-            Object[] result = (Object[]) o;
-            Integer count = (Integer) result[0];
-            Person p = (Person) result[1];
-            personAndCount.put(p, count);
-        }
-        return personAndCount;
+        return addResultToMap(select);
     }
 
     public Map<Person, Integer> getPersonsAndScoreForAktivitet(Aktivitet aktivitet) {
@@ -89,9 +79,12 @@ public class HighscoreService {
         Path<Aktivitet> aktivitetPath = from.get(UtfortAktivitet_.aktivitet);
 
         CriteriaQuery<Object> q = query.multiselect(sum, person).where(cb.equal(aktivitetPath, aktivitet)).orderBy(cb.desc(sum)).groupBy(person);
+        return addResultToMap(q);
+    }
+
+    private Map<Person, Integer> addResultToMap(CriteriaQuery<Object> q) {
         TypedQuery<Object> query1 = entityManager.createQuery(q);
         List<Object> resultList = query1.getResultList();
-
         Map<Person, Integer> personAndCount = new HashMap<Person, Integer>();
         for (Object o : resultList) {
             Object[] result = (Object[]) o;
@@ -102,13 +95,17 @@ public class HighscoreService {
         return personAndCount;
     }
 
-    public Map<Person, Long> getPersonsAndScoreForGruppe(Gruppe gruppe) {
-        Map<Person, Long> personAndScore = new HashMap<Person, Long>();
-        for(Person person : gruppe.getPersons()){
-            Long score = utfortAktivitetRepository.getPoengByPerson(person);
-            personAndScore.put(person, score);
-        }
-        return personAndScore;
+    public Map<Person, Integer> getPersonsAndScoreForGruppe(Gruppe gruppe) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object> query = cb.createQuery();
+        Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
+        Root<Person> personfrom = query.from(Person.class);
+        Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
+        Path<Person> person = from.get(UtfortAktivitet_.person);
+
+        CriteriaQuery<Object> q = query.multiselect(sum, person).where(cb.equal(personfrom.get(Person_.gruppe), gruppe)).orderBy(cb.desc(sum)).groupBy(person);
+
+        return addResultToMap(q);
     }
 
     public Map<Person, Long> getPersonsAndScoreForGruppeAndAktivitet(Gruppe gruppe, Aktivitet aktivitet) {
