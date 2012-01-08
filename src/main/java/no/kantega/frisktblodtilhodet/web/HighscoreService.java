@@ -80,11 +80,24 @@ public class HighscoreService {
         return personAndCount;
     }
 
-    public Map<Person, Long> getPersonsAndScoreForAktivitet(Aktivitet aktivitet) {
-        Map<Person, Long> personAndCount = new HashMap<Person, Long>();
-        for(final Person person : personRepository.findAll()){
-            long count = utfortAktivitetRepository.getPoengByAktivitetAndPerson(aktivitet, person);
-            personAndCount.put(person, count);
+    public Map<Person, Integer> getPersonsAndScoreForAktivitet(Aktivitet aktivitet) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object> query = cb.createQuery();
+        Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
+        Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
+        Path<Person> person = from.get(UtfortAktivitet_.person);
+        Path<Aktivitet> aktivitetPath = from.get(UtfortAktivitet_.aktivitet);
+
+        CriteriaQuery<Object> q = query.multiselect(sum, person).where(cb.equal(aktivitetPath, aktivitet)).orderBy(cb.desc(sum)).groupBy(person);
+        TypedQuery<Object> query1 = entityManager.createQuery(q);
+        List<Object> resultList = query1.getResultList();
+
+        Map<Person, Integer> personAndCount = new HashMap<Person, Integer>();
+        for (Object o : resultList) {
+            Object[] result = (Object[]) o;
+            Integer count = (Integer) result[0];
+            Person p = (Person) result[1];
+            personAndCount.put(p, count);
         }
         return personAndCount;
     }
