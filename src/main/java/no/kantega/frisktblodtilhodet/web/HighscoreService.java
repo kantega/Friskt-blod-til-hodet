@@ -1,8 +1,6 @@
 package no.kantega.frisktblodtilhodet.web;
 
-import no.kantega.frisktblodtilhodet.model.Aktivitet;
-import no.kantega.frisktblodtilhodet.model.Gruppe;
-import no.kantega.frisktblodtilhodet.model.Person;
+import no.kantega.frisktblodtilhodet.model.*;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
 import no.kantega.frisktblodtilhodet.service.GruppeRepository;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
@@ -10,6 +8,10 @@ import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,9 @@ public class HighscoreService {
     @Autowired
     private GruppeRepository gruppeRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public Map<Aktivitet, Long> getAktivitetAndCountForPerson(Person person) {
         List<Aktivitet> aktiviteter = aktivitetRepository.findAll();
         Map<Aktivitet, Long> aktivitetAndCountByPerson = new HashMap<Aktivitet, Long>();
@@ -40,12 +45,25 @@ public class HighscoreService {
         return aktivitetAndCountByPerson;
     }
 
-    public Map<Person, Long> getPersonAndScore() {
-        Map<Person, Long> personAndCount = new HashMap<Person, Long>();
-        for(final Person person : personRepository.findAll()){
-            long count = utfortAktivitetRepository.getPoengByPerson(person);
-            personAndCount.put(person, count);
+    public Map<Person, Integer> getPersonAndScore() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object> query = cb.createQuery();
+        Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
+        Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
+        Path<Person> person = from.get(UtfortAktivitet_.person);
+        CriteriaQuery<Object> select = query.multiselect(sum, person);
+        CriteriaQuery<Object> orderBy = select.orderBy(cb.desc(sum));
+        CriteriaQuery<Object> groupBy = orderBy.groupBy(person);
 
+        TypedQuery<Object> query1 = entityManager.createQuery(groupBy);
+        List<Object> resultList = query1.getResultList();
+
+        Map<Person, Integer> personAndCount = new HashMap<Person, Integer>();
+        for (Object o : resultList) {
+            Object[] result = (Object[]) o;
+            Integer count = (Integer) result[0];
+            Person p = (Person) result[1];
+            personAndCount.put(p, count);
         }
         return personAndCount;
     }
@@ -57,15 +75,6 @@ public class HighscoreService {
             personAndCount.put(person, count);
         }
         return personAndCount;
-    }
-
-    public Map<Gruppe, Long> getGruppeAndScore() {
-        Map<Gruppe, Long> gruppeAndScore = new HashMap<Gruppe, Long>();
-        for(Gruppe gruppe : gruppeRepository.findAll()){
-            Long score = utfortAktivitetRepository.getPoengByGruppe(gruppe);
-            gruppeAndScore.put(gruppe, score);
-        }
-        return gruppeAndScore;
     }
 
     public Map<Person, Long> getPersonsAndScoreForGruppe(Gruppe gruppe) {

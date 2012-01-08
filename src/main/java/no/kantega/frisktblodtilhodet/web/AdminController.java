@@ -49,27 +49,27 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/person", method = RequestMethod.POST)
-    public ResponseEntity<Person> savePerson(@ModelAttribute Person person){
+    public ResponseEntity savePerson(@ModelAttribute Person person){
 
         Person save = personRepository.save(person);
 
-        return new ResponseEntity<Person>(save, HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
-    public ResponseEntity<Gruppe> saveGruppe(@ModelAttribute Gruppe gruppe){
+    public ResponseEntity saveGruppe(@ModelAttribute Gruppe gruppe){
 
         Gruppe save = gruppeRepository.save(gruppe);
 
-        return new ResponseEntity<Gruppe>(save, HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/aktivitet", method = RequestMethod.POST)
-    public ResponseEntity<Aktivitet> saveAktivitet(@ModelAttribute Aktivitet aktivitet){
+    public ResponseEntity saveAktivitet(@ModelAttribute Aktivitet aktivitet){
 
         Aktivitet save = aktivitetRepository.save(aktivitet);
 
-        return new ResponseEntity<Aktivitet>(save, HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @InitBinder

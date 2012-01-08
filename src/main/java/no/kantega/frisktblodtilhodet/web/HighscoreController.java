@@ -41,7 +41,7 @@ public class HighscoreController {
     public String index(Model model){
         model.addAttribute("aktiviteter", aktivitetRepository.findAll());
 
-        Map<Person, Long> scores = highscoreService.getPersonAndScore();
+        Map<Person, Integer> scores = highscoreService.getPersonAndScore();
         model.addAttribute("personAndCount", scores);
         return "highscore/highscore";
     }
