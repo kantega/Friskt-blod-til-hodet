@@ -1,0 +1,27 @@
+    a .scoreIncrement {
+    font-size: 1.6em;
+    float: right;
+}
+
+.ui-icon-aktivitet-score {
+    background-image: url("app-icon-email.png");
+}
+
+a .score {
+    float: right;
+}
+
+#velggruppe {
+    width: 80%;
+    float: left;
+}
+
+#velgaktivitet {
+    width: 15%;
+    float: right;
+    padding: 0;
+}
+
+ul,li {
+    list-style-type: none;
+}

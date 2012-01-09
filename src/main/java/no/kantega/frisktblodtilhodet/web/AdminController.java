@@ -2,6 +2,7 @@ package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.editor.BindByIdEditor;
 import no.kantega.frisktblodtilhodet.model.Aktivitet;
+import no.kantega.frisktblodtilhodet.model.AktivitetType;
 import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -36,35 +38,39 @@ public class AdminController {
     @RequestMapping(method = RequestMethod.GET)
     public String admin(Model model){
         List<Gruppe> gruppeer = gruppeRepository.findAll();
-        model.addAttribute("gruppeer", gruppeer);
+        model.addAttribute("grupper", gruppeer);
 
+        List<String> aktivitetTyper = new LinkedList<String>();
+        for(AktivitetType aktivitetType : AktivitetType.values()){
+            aktivitetTyper.add(aktivitetType.name());
+        }
+        model.addAttribute("aktivitetsTyper", aktivitetTyper);
         return "admin";
     }
 
     @RequestMapping(value = "/person", method = RequestMethod.POST)
-    public ResponseEntity<Person> savePerson(@ModelAttribute Person person){
+    public ResponseEntity savePerson(@ModelAttribute Person person){
 
         Person save = personRepository.save(person);
 
-        return new ResponseEntity<Person>(save, HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
-    public ResponseEntity<Gruppe> saveGruppe(@ModelAttribute Gruppe gruppe){
+    public ResponseEntity saveGruppe(@ModelAttribute Gruppe gruppe){
 
         Gruppe save = gruppeRepository.save(gruppe);
 
-        return new ResponseEntity<Gruppe>(save, HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/aktivitet", method = RequestMethod.POST)
-    public ResponseEntity<Aktivitet> saveAktivitet(@ModelAttribute Aktivitet aktivitet){
+    public ResponseEntity saveAktivitet(@ModelAttribute Aktivitet aktivitet){
 
         Aktivitet save = aktivitetRepository.save(aktivitet);
 
-        return new ResponseEntity<Aktivitet>(save, HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
-
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

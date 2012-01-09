@@ -18,12 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:applicationContext-jpa.xml"})
+@ContextConfiguration({"classpath:testContext.xml"})
 @Transactional
 public class ServiceIntegrationTest {
 
@@ -77,6 +78,7 @@ public class ServiceIntegrationTest {
     public void testSavePerson(){
         Person person = new Person();
         person.setName("Person");
+        person.setUsername("username" + new Random().nextInt());
         testSaveGruppe();
         Gruppe gruppe = gruppeRepository.findAll().get(0);
         person.setGruppe(gruppe);

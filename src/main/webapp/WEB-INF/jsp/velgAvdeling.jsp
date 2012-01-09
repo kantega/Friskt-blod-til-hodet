@@ -30,7 +30,7 @@
     </div>
     <div data-role="content">
         <ul data-role="listview" data-theme="g" data-filter="true">
-            <c:forEach var="gruppe" items="${gruppeer}">
+            <c:forEach var="gruppe" items="${grupper}">
                 <li><a href="#" class="gruppe" id="${gruppe.id}">${gruppe.name}</a></li>
             </c:forEach>
         </ul>

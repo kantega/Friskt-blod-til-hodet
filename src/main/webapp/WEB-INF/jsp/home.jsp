@@ -6,21 +6,28 @@
 <head>
     <title>Friskt blod til hodet</title>
     <%@include file="include/js.jsp"%>
+    <script type="text/javascript" src="/resources/js/jquery-ui-1.8.16.custom.min.js"></script>
     <script>
         var username = localStorage.getItem('username');
         if(username == undefined){
-            username = prompt('Hva er Kantega-brukernavnet ditt?', '');
+            window.location = '/login'
+        }
 
-            $.get('/doesPersonExist', {username:username}, function(person){
-                if (person) {
-                    localStorage.setItem('username', username);
-                    if(!person.gruppe){
-                        document.location = '/velgGruppe';
-                    }
-                } else {
-                    alert('Fant ingen bruker med det brukernavnet')
+        var usernameCookie = getCookie('username');
+        if(usernameCookie  == undefined){
+            document.cookie='USERNAME' + "=" + username;
+        }
+
+        function getCookie(c_name){
+            var i,x,y,ARRcookies=document.cookie.split(";");
+            for (i=0;i<ARRcookies.length;i++){
+                x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+                y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+                x=x.replace(/^\s+|\s+$/g,"");
+                if (x==c_name){
+                    return unescape(y);
                 }
-            }, 'json');
+            }
         }
     </script>
 </head>
@@ -33,24 +40,36 @@
     </div>
     <div id="status"></div>
     <div data-role="content">
-        <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="true">
-            <c:forEach var="aktivitet" items="${aktiviteter}">
-                <li><a class="aktivitet" id="${aktivitet.id}" href="#">${aktivitet.name}</a></li>
+        <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="false">
+            <c:forEach var="aktivitet" items="${aktivitetAndCount}">
+                <li>
+                    <a class="aktivitet" id="${aktivitet.key.id}" href="/aktiviteter/${aktivitet.key.id}" data-icon="aktivitet-score" data-iconpos="right">${aktivitet.key.name}<span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span>xp</a>
+                </li>
             </c:forEach>
         </ul>
-
-        <a style="margin-top: 2em;" href="/statistikk" data-role="button" data-theme="a">Statistikk</a>
     </div>
+    <script>
+        var urlParam = $.urlParam("utfortaktivitet");
+        var scores = $("span.score");
+        if(urlParam != 0){
+            scores.each(function(index, value){
+                var jqvalue = $(value);
+                if(jqvalue.attr("id") == urlParam){
+                    var score = jqvalue.text();
+                    setTimeout(function(){
+                        jqvalue.text(parseInt(score) + 1);
+                        setTimeout(function(){
+                            jqvalue.switchClass( "scoreIncrement", "score", 1000 );
+                        }, 300);
+                    },1000);
+                    jqvalue.switchClass( "score", "scoreIncrement", 1000 );
+
+                    return false;
+                }
+            })
+        }
+    </script>
+    <%@include file="include/footer.jsp"%>
 </div>
-<script>
-    $('.aktivitet').click(function(){
-        var aktivitetId = $(this).attr('id');
-        var personId = localStorage.getItem('username');
-        $.post('/utfortaktivitet', {aktivitet: aktivitetId, person: personId}, function(data, textStatus, jqXHR){
-            $('#status').text(':)');
-        });
-        return false;
-    })
-</script>
 </body>
 </html>

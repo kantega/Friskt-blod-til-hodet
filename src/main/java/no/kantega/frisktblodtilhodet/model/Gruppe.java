@@ -13,13 +13,13 @@ public class Gruppe extends AbstractPersistable<Long>{
     @NotNull
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "gruppe")
     private List<Person> persons;
 
     @ManyToOne
     private Gruppe foreldreGruppe;
 
-    @OneToMany
+    @OneToMany(mappedBy = "foreldreGruppe")
     private List<Gruppe> undergrupper;
 
     public String getName() {
@@ -36,5 +36,21 @@ public class Gruppe extends AbstractPersistable<Long>{
 
     public void setPersons(List<Person> persons) {
         this.persons = persons;
+    }
+
+    public Gruppe getForeldreGruppe() {
+        return foreldreGruppe;
+    }
+
+    public void setForeldreGruppe(Gruppe foreldreGruppe) {
+        this.foreldreGruppe = foreldreGruppe;
+    }
+
+    public List<Gruppe> getUndergrupper() {
+        return undergrupper;
+    }
+
+    public void setUndergrupper(List<Gruppe> undergrupper) {
+        this.undergrupper = undergrupper;
     }
 }

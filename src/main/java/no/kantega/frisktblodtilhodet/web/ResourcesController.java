@@ -1,14 +1,11 @@
 package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.editor.BindByIdEditor;
-import no.kantega.frisktblodtilhodet.model.Aktivitet;
+import no.kantega.frisktblodtilhodet.editor.BindPersonByUsername;
 import no.kantega.frisktblodtilhodet.model.Gruppe;
 import no.kantega.frisktblodtilhodet.model.Person;
-import no.kantega.frisktblodtilhodet.model.UtfortAktivitet;
-import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
 import no.kantega.frisktblodtilhodet.service.GruppeRepository;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
-import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.beans.PropertyEditorSupport;
-import java.util.List;
-
 @Controller
 public class ResourcesController {
 
@@ -27,37 +21,19 @@ public class ResourcesController {
     private GruppeRepository gruppeRepository;
 
     @Autowired
-    private AktivitetRepository aktivitetRepository;
-
-    @Autowired
     private PersonRepository personRepository;
 
-    @Autowired
-    private UtfortAktivitetRepository utfortAktivitetRepository;
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String getAktiviteter(Model model){
-        List<Aktivitet> aktiviteter = aktivitetRepository.findAll();
-        model.addAttribute("aktiviteter", aktiviteter);
-        return "home";
-    }
-
-    @RequestMapping(value = "/utfortaktivitet", method = RequestMethod.POST)
-    public ResponseEntity registerAktivitet(@RequestParam Aktivitet aktivitet, @RequestParam Person person){
-
-        UtfortAktivitet utfortAktivitet = new UtfortAktivitet(aktivitet, person);
-        utfortAktivitetRepository.save(utfortAktivitet);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/doesPersonExist", method = RequestMethod.GET)
-    public @ResponseBody Person getPerson(@RequestParam String username){
-        return personRepository.findByUsername(username);
+    public @ResponseBody PersonDummy getPerson(@RequestParam String username){
+        Person person = personRepository.findByUsername(username);
+        PersonDummy personDummy = new PersonDummy();
+        personDummy.setGruppe(person.getGruppe().getId());
+        return personDummy;
     }
 
     @RequestMapping(value = "/velgGruppe", method = RequestMethod.GET)
     public String velgGruppe(Model model){
-        model.addAttribute("gruppeer", gruppeRepository.findAll());
+        model.addAttribute("grupper", gruppeRepository.findAll());
         return "velgGruppe";
     }
 
@@ -70,21 +46,19 @@ public class ResourcesController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Aktivitet.class, new BindByIdEditor(aktivitetRepository));
         binder.registerCustomEditor(Gruppe.class, new BindByIdEditor(gruppeRepository));
-        binder.registerCustomEditor(Person.class, new BindPersonByUsername());
+        binder.registerCustomEditor(Person.class, new BindPersonByUsername(personRepository));
     }
 
-    private class BindPersonByUsername extends PropertyEditorSupport {
-        @Override
-        public void setAsText(String text) {
-            setValue(personRepository.findByUsername(text));
+    private class PersonDummy {
+        private Long gruppe;
+
+        public Long getGruppe() {
+            return gruppe;
         }
 
-        @Override
-        public String getAsText() {
-            Person value = (Person) getValue();
-            return value.getUsername();
+        public void setGruppe(Long gruppe) {
+            this.gruppe = gruppe;
         }
     }
 }
