@@ -27,7 +27,10 @@ public class ResourcesController {
     public @ResponseBody PersonDummy getPerson(@RequestParam String username){
         Person person = personRepository.findByUsername(username);
         PersonDummy personDummy = new PersonDummy();
-        personDummy.setGruppe(person.getGruppe().getId());
+        Gruppe gruppe = person.getGruppe();
+        if (gruppe != null) {
+            personDummy.setGruppe(gruppe.getId());
+        }
         return personDummy;
     }
 
