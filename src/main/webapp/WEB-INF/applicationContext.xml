@@ -12,8 +12,8 @@
             <bean class="org.simplericity.datadirlocator.DefaultDataDirectoryLocator">
                 <property name="defaultDir" value="$HOME/frisktblodstorage"/>
                 <property name="envVarName" value="KANTEGADIR"/>
-                <property name="jndiName" value="kantega.dir"/>
-                <property name="systemProperty" value="kantega.dir"/>
+                <property name="jndiName" value="kantega.appDir"/>
+                <property name="systemProperty" value="kantega.appDir"/>
             </bean>
         </property>
     </bean>
