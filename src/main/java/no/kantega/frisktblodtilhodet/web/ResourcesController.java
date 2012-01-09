@@ -26,10 +26,13 @@ public class ResourcesController {
     @RequestMapping(value = "/doesPersonExist", method = RequestMethod.GET)
     public @ResponseBody PersonDummy getPerson(@RequestParam String username){
         Person person = personRepository.findByUsername(username);
-        PersonDummy personDummy = new PersonDummy();
-        Gruppe gruppe = person.getGruppe();
-        if (gruppe != null) {
-            personDummy.setGruppe(gruppe.getId());
+        PersonDummy personDummy = null;
+        if (person != null) {
+            personDummy = new PersonDummy();
+            Gruppe gruppe = person.getGruppe();
+            if (gruppe != null) {
+                personDummy.setGruppe(gruppe.getId());
+            }
         }
         return personDummy;
     }

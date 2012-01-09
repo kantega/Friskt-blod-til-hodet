@@ -1,6 +1,6 @@
 <configuration>
 
-    <appender name="other" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <Pattern>%d{HH:mm:ss dd-MM-yyyy} %-5level %logger{36} - %msg%n</Pattern>
         </encoder>
@@ -21,6 +21,7 @@
     </appender>
 
     <root level="debug">
-        <appender-ref ref="other" />
+        <appender-ref ref="file" />
     </root>
+    <logger name="no.kantega" level="info"/>
 </configuration>
