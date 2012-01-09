@@ -6,13 +6,13 @@
     <import resource="classpath*:/applicationContext-jpa.xml" />
 
     <bean class="no.kantega.frisktblodtilhodet.DatadirPropertyPlaceholderConfigurer">
-        <property name="configurationFileName" value="frisktblod.conf" />
+        <property name="configurationFileName" value="conf/aksess.conf" />
         <property name="dataDirectoryLocator">
             <bean class="org.simplericity.datadirlocator.DefaultDataDirectoryLocator">
                 <property name="defaultDir" value="$HOME/frisktblodstorage"/>
-                <property name="envVarName" value="FRISKTBLODDATADIR"/>
-                <property name="jndiName" value="frisktblodDataDir"/>
-                <property name="systemProperty" value="frisktblodDataDir"/>
+                <property name="envVarName" value="KANTEGADIR"/>
+                <property name="jndiName" value="kantega.dir"/>
+                <property name="systemProperty" value="kantega.dir"/>
             </bean>
         </property>
     </bean>
