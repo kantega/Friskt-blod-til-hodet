@@ -39,7 +39,7 @@
                     var gruppe = velgGruppeSelect.val();
                     var aktivitet = velgAktivitetSelect.val();
 
-                    var url = "highscore/" + gruppe + "/" + aktivitet;
+                    var url = "${pageContext.request.contextPath}/highscore/" + gruppe + "/" + aktivitet;
                     $("#highscoreList").load(url);
                 };
                 velgAktivitetSelect.change(onSelectHandler);
