@@ -1,9 +1,6 @@
 package no.kantega.frisktblodtilhodet.web;
 
-import no.kantega.frisktblodtilhodet.model.Aktivitet;
-import no.kantega.frisktblodtilhodet.model.Gruppe;
-import no.kantega.frisktblodtilhodet.model.Person;
-import no.kantega.frisktblodtilhodet.model.UtfortAktivitet;
+import no.kantega.frisktblodtilhodet.model.*;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
 import no.kantega.frisktblodtilhodet.service.GruppeRepository;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
