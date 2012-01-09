@@ -10,13 +10,13 @@
                 event.preventDefault();
                 var username = $("#username").val();
 
-                $.get('/doesPersonExist', {username:username}, function(person){
+                $.get('${pageContext.request.contextPath}/doesPersonExist', {username:username}, function(person){
                     if (person) {
                         localStorage.setItem('username', username);
                         if(!person.gruppe){
-                            document.location = '/velgGruppe';
+                            document.location = '${pageContext.request.contextPath}/velgGruppe';
                         }else{
-                            document.location = '/';
+                            document.location = '${pageContext.request.contextPath}/';
                         }
                     } else {
                         alert('Fant ingen bruker med det brukernavnet')

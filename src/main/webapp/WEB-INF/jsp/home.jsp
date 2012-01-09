@@ -6,7 +6,7 @@
 <head>
     <title>Friskt blod til hodet</title>
     <%@include file="include/js.jsp"%>
-    <script type="text/javascript" src="/resources/js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.8.16.custom.min.js"></script>
     <script>
         var username = localStorage.getItem('username');
         if(username == undefined){
@@ -43,7 +43,7 @@
         <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="false">
             <c:forEach var="aktivitet" items="${aktivitetAndCount}">
                 <li>
-                    <a class="aktivitet" id="${aktivitet.key.id}" href="/aktiviteter/${aktivitet.key.id}" data-icon="aktivitet-score" data-iconpos="right">${aktivitet.key.name}<span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span>xp</a>
+                    <a class="aktivitet" id="${aktivitet.key.id}" href="${pageContext.request.contextPath}/aktiviteter/${aktivitet.key.id}" data-icon="aktivitet-score" data-iconpos="right">${aktivitet.key.name}<span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span>xp</a>
                 </li>
             </c:forEach>
         </ul>

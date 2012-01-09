@@ -11,9 +11,9 @@
             $('.gruppe').click(function(){
                 var id = $(this).attr('id');
                 var username = localStorage.getItem('username');
-                $.post('/velgGruppe', {person: username, gruppe: id}, function(data, status, xhq){
+                $.post('${pageContext.request.contextPath}/velgGruppe', {person: username, gruppe: id}, function(data, status, xhq){
                     if(status === 'success'){
-                        document.location = '/';
+                        document.location = '${pageContext.request.contextPath}/';
                     }else{
                         alert('Feil');
                     }
