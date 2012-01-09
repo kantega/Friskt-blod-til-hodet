@@ -9,7 +9,7 @@
         <append>true</append>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${kantega.dir}/logs/aksess.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <FileNamePattern>${kantega.appDir}/logs/aksess.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
     </appender>
