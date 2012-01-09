@@ -13,6 +13,7 @@
                 <property name="defaultDir" value="$HOME/frisktblodstorage"/>
                 <property name="envVarName" value="KANTEGADIR"/>
                 <property name="jndiName" value="kantega.appDir"/>
+                <property name="contextParamName" value="kantega.appDir"/>
                 <property name="systemProperty" value="kantega.appDir"/>
             </bean>
         </property>
