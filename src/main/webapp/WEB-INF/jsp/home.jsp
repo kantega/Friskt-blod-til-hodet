@@ -10,7 +10,7 @@
     <script>
         var username = localStorage.getItem('username');
         if(username == undefined){
-            window.location = '/login'
+            window.location = '${pageContext.request.contextPath}/login'
         }
 
         var usernameCookie = getCookie('username');
