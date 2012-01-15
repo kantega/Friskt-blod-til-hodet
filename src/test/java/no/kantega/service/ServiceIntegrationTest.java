@@ -24,7 +24,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath*:testContext.xml"})
+@ContextConfiguration({"classpath:testContext.xml"})
 @Transactional
 public class ServiceIntegrationTest {
 

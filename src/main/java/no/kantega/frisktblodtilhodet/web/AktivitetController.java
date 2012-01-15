@@ -38,7 +38,7 @@ public class AktivitetController {
         if (!username.equals("")) {
             Person person = personRepository.findByUsername(username);
 
-            Map<Aktivitet, Long> aktivitetAndCountByPerson = highscoreService.getAktivitetAndCountForPerson(person);
+            Map<Aktivitet, Integer> aktivitetAndCountByPerson = highscoreService.getAktivitetAndCountForPerson(person);
 
             model.addAttribute("aktivitetAndCount", aktivitetAndCountByPerson);
         }

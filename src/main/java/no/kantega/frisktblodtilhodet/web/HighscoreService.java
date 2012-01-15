@@ -55,7 +55,17 @@ public class HighscoreService {
             aktivitetAndCountByPerson.put((Aktivitet)result[1], (Integer)result[0]);
         }
 
+        addNotPresentAktivitetAndZeroCount(aktivitetAndCountByPerson);
         return aktivitetAndCountByPerson;
+    }
+
+    private void addNotPresentAktivitetAndZeroCount(Map<Aktivitet, Integer> aktivitetAndCountByPerson) {
+        for(Aktivitet aktivitet : aktivitetRepository.findAll()){
+            boolean notPresent = !aktivitetAndCountByPerson.containsKey(aktivitet);
+            if(notPresent){
+                aktivitetAndCountByPerson.put(aktivitet, 0);
+            }
+        }
     }
 
     public Map<Person, Integer> getPersonAndScore() {

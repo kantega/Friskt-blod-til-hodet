@@ -16,7 +16,7 @@
         <div class="status" id="adminstatus"></div>
 
         <div class="admin" id="aktivitet">
-            <form class="adminForm" id="aktivitetForm" method="post" action="/admin/aktivitet">
+            <form class="adminForm" id="aktivitetForm" method="post" action="${pageContext.request.contextPath}/admin/aktivitet">
                 <fieldset>
                     <legend>Aktivitet</legend>
                     <label for="aktivitetname">Aktivitetsnavn</label>
@@ -34,7 +34,7 @@
         </div>
 
         <div class="admin" id="person">
-            <form class="adminForm" id="personForm" method="post" action="/admin/person">
+            <form class="adminForm" id="personForm" method="post" action="${pageContext.request.contextPath}/admin/person">
                 <fieldset>
                     <legend>Person</legend>
 
@@ -55,7 +55,7 @@
         </div>
 
         <div class="admin" id="gruppe">
-            <form class="adminForm" id="gruppeForm" method="post" action="/admin/gruppe">
+            <form class="adminForm" id="gruppeForm" method="post" action="${pageContext.request.contextPath}/admin/gruppe">
                 <fieldset>
                     <legend>Gruppe</legend>
 

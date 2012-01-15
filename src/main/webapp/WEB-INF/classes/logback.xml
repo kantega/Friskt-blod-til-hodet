@@ -1,0 +1,27 @@
+<configuration>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <Pattern>%d{HH:mm:ss dd-MM-yyyy} %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
+
+        <file>${loggingDirectory}/aksess.log</file>
+        <append>true</append>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${loggingDirectory}/aksess.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm:ss dd-MM-yyyy} %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="file" />
+    </root>
+    <logger name="no.kantega" level="info"/>
+</configuration>
