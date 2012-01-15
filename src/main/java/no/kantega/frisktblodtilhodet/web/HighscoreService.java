@@ -122,20 +122,49 @@ public class HighscoreService {
         return addResultToMap(q);
     }
 
-    public Map<Gruppe, Long> getGrupperAndScoreForAktivitet(Aktivitet aktivitet) {
-        Map<Gruppe, Long> gruppeAndScore = new HashMap<Gruppe, Long>();
-        for(Gruppe gruppe : gruppeRepository.findAll()){
-            Long score = utfortAktivitetRepository.getPoengByAktivitetAndGruppe(aktivitet, gruppe);
-            gruppeAndScore.put(gruppe, score);
+    public Map<Gruppe, Integer> getGrupperAndScoreForAktivitet(Aktivitet aktivitet) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object> query = cb.createQuery();
+        Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
+        Root<Gruppe> gruppeFrom = query.from(Gruppe.class);
+        Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
+        Path<Gruppe> personGruppe = from.get(UtfortAktivitet_.person).get(Person_.gruppe);
+
+        Predicate and = cb.and(cb.equal(personGruppe, gruppeFrom), cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet));
+        CriteriaQuery<Object> sumForGruppe = query.multiselect(sum, gruppeFrom).where(and).groupBy(gruppeFrom);
+
+        TypedQuery<Object> query1 = entityManager.createQuery(sumForGruppe);
+        List<Object> resultList = query1.getResultList();
+
+        Map<Gruppe, Integer> gruppeAndScore = new HashMap<Gruppe, Integer>();
+        for (Object o : resultList) {
+            Object[] result = (Object[]) o;
+            Integer count = (Integer) result[0];
+            Gruppe g = (Gruppe) result[1];
+            gruppeAndScore.put(g, count);
         }
         return gruppeAndScore;
     }
 
-    public Map<Gruppe, Long> getGrupperAndScoreForAlle() {
-        Map<Gruppe, Long> gruppeAndScore = new HashMap<Gruppe, Long>();
-        for(Gruppe gruppe : gruppeRepository.findAll()){
-            Long score = utfortAktivitetRepository.getPoengByGruppe(gruppe);
-            gruppeAndScore.put(gruppe, score);
+    public Map<Gruppe, Integer> getGrupperAndScoreForAlle() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object> query = cb.createQuery();
+        Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
+        Root<Gruppe> gruppeFrom = query.from(Gruppe.class);
+        Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
+        Path<Gruppe> personGruppe = from.get(UtfortAktivitet_.person).get(Person_.gruppe);
+
+        CriteriaQuery<Object> sumForGruppe = query.multiselect(sum, gruppeFrom).where(cb.equal(personGruppe, gruppeFrom)).groupBy(gruppeFrom);
+
+        TypedQuery<Object> query1 = entityManager.createQuery(sumForGruppe);
+        List<Object> resultList = query1.getResultList();
+
+        Map<Gruppe, Integer> gruppeAndScore = new HashMap<Gruppe, Integer>();
+        for (Object o : resultList) {
+            Object[] result = (Object[]) o;
+            Integer count = (Integer) result[0];
+            Gruppe g = (Gruppe) result[1];
+            gruppeAndScore.put(g, count);
         }
         return gruppeAndScore;
     }

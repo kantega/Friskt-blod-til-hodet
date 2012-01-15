@@ -66,14 +66,14 @@ public class HighscoreController {
 
     @RequestMapping(value = "/Grupper/{aktivitet}")
     public String getForAktivitetForGrupper(@PathVariable Aktivitet aktivitet, Model model){
-        Map<Gruppe, Long> scores = highscoreService.getGrupperAndScoreForAktivitet(aktivitet);
+        Map<Gruppe, Integer> scores = highscoreService.getGrupperAndScoreForAktivitet(aktivitet);
         model.addAttribute("personAndCount", scores);
         return "highscore/list";
     }
 
     @RequestMapping(value = "/Grupper/Alle")
     public String getForAlleForGruppe(Model model){
-        Map<Gruppe, Long> scores = highscoreService.getGrupperAndScoreForAlle();
+        Map<Gruppe, Integer> scores = highscoreService.getGrupperAndScoreForAlle();
         model.addAttribute("personAndCount", scores);
         return "highscore/list";
     }
