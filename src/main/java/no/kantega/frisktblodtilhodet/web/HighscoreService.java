@@ -2,9 +2,6 @@ package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.model.*;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
-import no.kantega.frisktblodtilhodet.service.GruppeRepository;
-import no.kantega.frisktblodtilhodet.service.PersonRepository;
-import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,15 +19,6 @@ public class HighscoreService {
 
     @Autowired
     private AktivitetRepository aktivitetRepository;
-
-    @Autowired
-    private UtfortAktivitetRepository utfortAktivitetRepository;
-
-    @Autowired
-    private PersonRepository personRepository;
-
-    @Autowired
-    private GruppeRepository gruppeRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -141,7 +129,7 @@ public class HighscoreService {
         Path<Gruppe> personGruppe = from.get(UtfortAktivitet_.person).get(Person_.gruppe);
 
         Predicate and = cb.and(cb.equal(personGruppe, gruppeFrom), cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet));
-        CriteriaQuery<Object> sumForGruppe = query.multiselect(sum, gruppeFrom).where(and).groupBy(gruppeFrom);
+        CriteriaQuery<Object> sumForGruppe = query.multiselect(sum, gruppeFrom).where(and).groupBy(gruppeFrom).orderBy(cb.desc(sum));
 
         TypedQuery<Object> query1 = entityManager.createQuery(sumForGruppe);
         List<Object> resultList = query1.getResultList();
@@ -164,7 +152,7 @@ public class HighscoreService {
         Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
         Path<Gruppe> personGruppe = from.get(UtfortAktivitet_.person).get(Person_.gruppe);
 
-        CriteriaQuery<Object> sumForGruppe = query.multiselect(sum, gruppeFrom).where(cb.equal(personGruppe, gruppeFrom)).groupBy(gruppeFrom);
+        CriteriaQuery<Object> sumForGruppe = query.multiselect(sum, gruppeFrom).where(cb.equal(personGruppe, gruppeFrom)).groupBy(gruppeFrom).orderBy(cb.desc(sum));
 
         TypedQuery<Object> query1 = entityManager.createQuery(sumForGruppe);
         List<Object> resultList = query1.getResultList();
