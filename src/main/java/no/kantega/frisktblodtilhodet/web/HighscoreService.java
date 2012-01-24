@@ -120,47 +120,47 @@ public class HighscoreService {
         return addResultToMap(q);
     }
 
-    public Map<Gruppe, Integer> getGrupperAndScoreForAktivitet(Aktivitet aktivitet) {
+    public Map<Gruppe, Double> getGrupperAndScoreForAktivitet(Aktivitet aktivitet) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
         Root<Gruppe> gruppeFrom = query.from(Gruppe.class);
-        Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
+        Expression<Double> avg = cb.avg(from.get(UtfortAktivitet_.poeng));
         Path<Gruppe> personGruppe = from.get(UtfortAktivitet_.person).get(Person_.gruppe);
 
         Predicate and = cb.and(cb.equal(personGruppe, gruppeFrom), cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet));
-        CriteriaQuery<Object> sumForGruppe = query.multiselect(sum, gruppeFrom).where(and).groupBy(gruppeFrom).orderBy(cb.desc(sum));
+        CriteriaQuery<Object> avgForGruppe = query.multiselect(avg, gruppeFrom).where(and).groupBy(gruppeFrom).orderBy(cb.desc(avg));
 
-        TypedQuery<Object> query1 = entityManager.createQuery(sumForGruppe);
+        TypedQuery<Object> query1 = entityManager.createQuery(avgForGruppe);
         List<Object> resultList = query1.getResultList();
 
-        Map<Gruppe, Integer> gruppeAndScore = new HashMap<Gruppe, Integer>();
+        Map<Gruppe, Double> gruppeAndScore = new HashMap<Gruppe, Double>();
         for (Object o : resultList) {
             Object[] result = (Object[]) o;
-            Integer count = (Integer) result[0];
+            Double count = (Double) result[0];
             Gruppe g = (Gruppe) result[1];
             gruppeAndScore.put(g, count);
         }
         return gruppeAndScore;
     }
 
-    public Map<Gruppe, Integer> getGrupperAndScoreForAlle() {
+    public Map<Gruppe, Double> getGrupperAndScoreForAlle() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
         Root<Gruppe> gruppeFrom = query.from(Gruppe.class);
-        Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
+        Expression<Double> avg = cb.avg(from.get(UtfortAktivitet_.poeng));
         Path<Gruppe> personGruppe = from.get(UtfortAktivitet_.person).get(Person_.gruppe);
 
-        CriteriaQuery<Object> sumForGruppe = query.multiselect(sum, gruppeFrom).where(cb.equal(personGruppe, gruppeFrom)).groupBy(gruppeFrom).orderBy(cb.desc(sum));
+        CriteriaQuery<Object> avgForGruppe = query.multiselect(avg, gruppeFrom).where(cb.equal(personGruppe, gruppeFrom)).groupBy(gruppeFrom).orderBy(cb.desc(avg));
 
-        TypedQuery<Object> query1 = entityManager.createQuery(sumForGruppe);
+        TypedQuery<Object> query1 = entityManager.createQuery(avgForGruppe);
         List<Object> resultList = query1.getResultList();
 
-        Map<Gruppe, Integer> gruppeAndScore = new HashMap<Gruppe, Integer>();
+        Map<Gruppe, Double> gruppeAndScore = new HashMap<Gruppe, Double>();
         for (Object o : resultList) {
             Object[] result = (Object[]) o;
-            Integer count = (Integer) result[0];
+            Double count = (Double) result[0];
             Gruppe g = (Gruppe) result[1];
             gruppeAndScore.put(g, count);
         }
