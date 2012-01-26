@@ -20,7 +20,7 @@ public class KantegaUserImport {
     private PersonRepository personRepository;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Scheduled(cron = "0 0 6 ? * *")
+    @Scheduled(cron = "0 0 5 * * MON")
     public void importPersons(){
         List search = ldapTemplate.search("", "cn=*", new AttributesMapper() {
             public Object mapFromAttributes(Attributes attributes) throws NamingException {

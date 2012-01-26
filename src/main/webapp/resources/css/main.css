@@ -1,10 +1,15 @@
-    a .scoreIncrement {
+@font-face {
+    font-family: slackey;
+    src: url('../Slackey.ttf');
+}
+
+a .scoreIncrement {
     font-size: 1.6em;
     float: right;
 }
 
 .ui-icon-aktivitet-score {
-    background-image: url("app-icon-email.png");
+    background-image: url("/resources/images/redstar.png");
 }
 
 a .score {
@@ -24,4 +29,23 @@ a .score {
 
 ul,li {
     list-style-type: none;
+}
+
+.mengdeDescription {
+    visibility: hidden;
+}
+
+html.ui-mobile body.ui-mobile-viewport div#login.ui-page {
+    background-image: url("../images/bg-tile.jpg")
+}
+
+.headerimage {
+    width: 160px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+* {
+    font-family: slackey;
 }

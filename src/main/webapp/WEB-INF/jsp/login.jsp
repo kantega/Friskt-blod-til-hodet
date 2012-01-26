@@ -31,8 +31,7 @@
 <body>
 <div id="login" data-role="page">
     <div data-role="header">
-        <h1>Friskt blod til hodet</h1>
-        <h2>Logg inn</h2>
+        <img class="headerimage" src="${pageContext.request.contextPath}/resources/images/header.png" title="Blod til hodet" alt="Blod til hodet">
     </div>
     <div data-role="content">
         <form id="loginform">

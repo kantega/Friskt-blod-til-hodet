@@ -14,6 +14,8 @@ public class Aktivitet extends AbstractPersistable<Long>{
     @Enumerated
     private AktivitetType aktivitetsType = AktivitetType.Standard;
 
+    private String mengdeDescription;
+    
     public String getName() {
         return name;
     }
@@ -28,5 +30,13 @@ public class Aktivitet extends AbstractPersistable<Long>{
 
     public void setAktivitetsType(AktivitetType aktivitetsType) {
         this.aktivitetsType = aktivitetsType;
+    }
+
+    public String getMengdeDescription() {
+        return mengdeDescription;
+    }
+
+    public void setMengdeDescription(String mengdeDescription) {
+        this.mengdeDescription = mengdeDescription;
     }
 }

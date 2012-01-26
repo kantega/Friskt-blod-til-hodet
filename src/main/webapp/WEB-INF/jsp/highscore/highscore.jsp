@@ -10,7 +10,7 @@
 <body>
 <div data-role="page">
     <div data-role="header">
-        <h1>Friskt blod til hodet</h1>
+        <img class="headerimage" src="${pageContext.request.contextPath}/resources/images/header.png" title="Blod til hodet" alt="Blod til hodet">
         <h2>Highscore</h2>
     </div>
     <div data-role="content">

@@ -26,7 +26,8 @@
 <body>
 <div data-role="page">
     <div data-role="header">
-        <h1>Velg gruppe</h1>
+        <img class="headerimage" src="${pageContext.request.contextPath}/resources/images/header.png" title="Blod til hodet" alt="Blod til hodet">
+        <h2>Velg gruppe</h2>
     </div>
     <div data-role="content">
         <ul data-role="listview" data-theme="g" data-filter="true">

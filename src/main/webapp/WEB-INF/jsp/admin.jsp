@@ -27,6 +27,8 @@
                             <option value="${aktivitettype}">${aktivitettype}</option>
                         </c:forEach>
                     </select>
+                    <label for="mendgedescription" class="mengdeDescription">Beskrivelse av mengdeenhet(feks etasjer)</label>
+                    <input name="mengdeDescription" id="mendgedescription" class="mengdeDescription" type="text">
                     <input type="submit" value="Lagre">
                 </fieldset>
             </form>
@@ -82,6 +84,11 @@
         }, 'json');
         return false;
     });
+    $('#aktivitettype').change(function(event){
+        if($('#aktivitettype').val() == "MengdeAktivitet"){
+            $('.mengdeDescription').show();
+        }
+    })
 </script>
 </body>
 </html>
