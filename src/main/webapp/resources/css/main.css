@@ -6,13 +6,30 @@
 a .scoreIncrement {
     font-size: 1.6em;
     float: right;
+    background: url("/resources/images/redstar.png") no-repeat;
+    background-size: 100%;
+    min-width: 50px;
+    min-height: 50px;
+    padding-top: 8px;
+    text-align: center;
+    color: #ffffff;
 }
 
-.ui-icon-aktivitet-score {
-    background-image: url("/resources/images/redstar.png");
+.score {
+    background: url("/resources/images/redstar.png") no-repeat;
+    background-size: 100%;
+    min-width: 40px;
+    min-height: 40px;
+    padding-top: 8px;
+    text-align: center;
+    color: #ffffff;
 }
 
-a .score {
+.xp {
+    padding-top: 8px;
+}
+
+a .score, a .xp {
     float: right;
 }
 

@@ -42,7 +42,7 @@
         <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="false">
             <c:forEach var="aktivitet" items="${aktivitetAndCount}">
                 <li>
-                    <a class="aktivitet" id="${aktivitet.key.id}" href="${pageContext.request.contextPath}/aktiviteter/${aktivitet.key.id}" data-icon="aktivitet-score" data-iconpos="right">${aktivitet.key.name}<span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span>xp</a>
+                    <a class="aktivitet" id="${aktivitet.key.id}" href="${pageContext.request.contextPath}/aktiviteter/${aktivitet.key.id}" data-icon="aktivitet-score" data-iconpos="right">${aktivitet.key.name}<span class="xp">xp</span><span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span></a>
                 </li>
             </c:forEach>
         </ul>
