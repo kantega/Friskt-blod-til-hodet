@@ -23,7 +23,7 @@ public class UtfortAktivitet extends AbstractPersistable<Long>{
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar time = Calendar.getInstance();
 
-    private Boolean isWinner;
+    private Boolean isWinner = false;
 
     private Integer mengde = 0;
 

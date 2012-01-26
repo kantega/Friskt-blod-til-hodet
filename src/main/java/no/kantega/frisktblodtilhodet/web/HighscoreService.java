@@ -2,6 +2,7 @@ package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.model.*;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
+import no.kantega.frisktblodtilhodet.service.GruppeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,16 +10,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class HighscoreService {
 
     @Autowired
     private AktivitetRepository aktivitetRepository;
+    
+    @Autowired
+    private GruppeRepository gruppeRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -123,47 +124,55 @@ public class HighscoreService {
     public Map<Gruppe, Double> getGrupperAndScoreForAktivitet(Aktivitet aktivitet) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
+
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
-        Root<Gruppe> gruppeFrom = query.from(Gruppe.class);
-        Expression<Double> avg = cb.avg(from.get(UtfortAktivitet_.poeng));
-        Path<Gruppe> personGruppe = from.get(UtfortAktivitet_.person).get(Person_.gruppe);
-
-        Predicate and = cb.and(cb.equal(personGruppe, gruppeFrom), cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet));
-        CriteriaQuery<Object> avgForGruppe = query.multiselect(avg, gruppeFrom).where(and).groupBy(gruppeFrom).orderBy(cb.desc(avg));
-
-        TypedQuery<Object> query1 = entityManager.createQuery(avgForGruppe);
-        List<Object> resultList = query1.getResultList();
-
-        Map<Gruppe, Double> gruppeAndScore = new HashMap<Gruppe, Double>();
-        for (Object o : resultList) {
-            Object[] result = (Object[]) o;
-            Double count = (Double) result[0];
-            Gruppe g = (Gruppe) result[1];
-            gruppeAndScore.put(g, count);
+        final Map<Gruppe, Double> avg = new HashMap<Gruppe, Double>();
+        for (Gruppe gruppe : gruppeRepository.findAllLeafGrupper()){
+            int groupSum = 0;
+            for (Person person : gruppe.getPersons()) {
+                CriteriaQuery<Object> selectSum = query.select(cb.sum(from.get(UtfortAktivitet_.poeng))).where(cb.and(cb.equal(from.get(UtfortAktivitet_.person), person), cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet)));
+                TypedQuery<Object> query1 = entityManager.createQuery(selectSum);
+                Integer personSum = (Integer) query1.getSingleResult();
+                if (personSum != null) {
+                    groupSum += personSum;
+                }
+            }
+            avg.put(gruppe, (double)groupSum / (double)gruppe.getPersons().size());
         }
-        return gruppeAndScore;
+
+        return getSortedMap(avg);
     }
 
     public Map<Gruppe, Double> getGrupperAndScoreForAlle() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
+
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
-        Root<Gruppe> gruppeFrom = query.from(Gruppe.class);
-        Expression<Double> avg = cb.avg(from.get(UtfortAktivitet_.poeng));
-        Path<Gruppe> personGruppe = from.get(UtfortAktivitet_.person).get(Person_.gruppe);
-
-        CriteriaQuery<Object> avgForGruppe = query.multiselect(avg, gruppeFrom).where(cb.equal(personGruppe, gruppeFrom)).groupBy(gruppeFrom).orderBy(cb.desc(avg));
-
-        TypedQuery<Object> query1 = entityManager.createQuery(avgForGruppe);
-        List<Object> resultList = query1.getResultList();
-
-        Map<Gruppe, Double> gruppeAndScore = new HashMap<Gruppe, Double>();
-        for (Object o : resultList) {
-            Object[] result = (Object[]) o;
-            Double count = (Double) result[0];
-            Gruppe g = (Gruppe) result[1];
-            gruppeAndScore.put(g, count);
+        final Map<Gruppe, Double> avg = new HashMap<Gruppe, Double>();
+        for (Gruppe gruppe : gruppeRepository.findAllLeafGrupper()){
+            int groupSum = 0;
+            for (Person person : gruppe.getPersons()) {
+                CriteriaQuery<Object> selectSum = query.select(cb.sum(from.get(UtfortAktivitet_.poeng))).where(cb.equal(from.get(UtfortAktivitet_.person), person));
+                TypedQuery<Object> query1 = entityManager.createQuery(selectSum);
+                Integer personSum = (Integer) query1.getSingleResult();
+                groupSum += personSum;
+            }
+            avg.put(gruppe, (double)groupSum / (double)gruppe.getPersons().size());
         }
-        return gruppeAndScore;
+
+        return getSortedMap(avg);
+    }
+
+    private TreeMap<Gruppe, Double> getSortedMap(final Map<Gruppe, Double> avg) {
+        TreeMap<Gruppe, Double> gruppeDoubleTreeMap = new TreeMap<Gruppe, Double>(new Comparator<Gruppe>() {
+            @Override
+            public int compare(Gruppe o1, Gruppe o2) {
+                Double v1 = avg.get(o1);
+                Double v2 = avg.get(o2);
+                return v1.compareTo(v2);
+            }
+        });
+        gruppeDoubleTreeMap.putAll(avg);
+        return gruppeDoubleTreeMap;
     }
 }
