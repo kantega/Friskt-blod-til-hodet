@@ -25,11 +25,7 @@ a .scoreIncrement {
     color: #ffffff;
 }
 
-.xp {
-    padding-top: 8px;
-}
-
-a .score, a .xp {
+.score{
     float: right;
 }
 
@@ -65,4 +61,8 @@ html.ui-mobile body.ui-mobile-viewport div#login.ui-page {
 
 * {
     font-family: slackey;
+}
+
+#footer li .ui-btn-active {
+    background-color: #be3510;
 }

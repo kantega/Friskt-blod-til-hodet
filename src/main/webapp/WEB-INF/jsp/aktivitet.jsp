@@ -22,6 +22,7 @@
                     <fieldset data-role="controlgroup" data-type="horizontal" >
                         <label for="mengde">Mengde</label>
                         <input name="mengde" id="mengde" type="number" value="0">
+                        <c:if test="${not empty aktivitet.mengdeDescription}"><label for="mengde">${aktivitet.mengdeDescription}</label></c:if>
                     </fieldset>
                 </div>
             </c:if>
@@ -41,7 +42,7 @@
         </form>
         <div data-role="controlgroup" data-type="horizontal">
             <a href="${pageContext.request.contextPath}" data-role="button" id="cancel">Avbryt</a>
-            <a href="${pageContext.request.contextPath}/?utfortaktivitet=${aktivitet.id}" data-ajax="false" data-role="button" id="ok">Ok</a>
+            <a href="${pageContext.request.contextPath}/?utfortaktivitet=${aktivitet.id}#${aktivitet.id}" data-ajax="false" data-role="button" id="ok">Ok</a>
         </div>
     </div>
     <script>

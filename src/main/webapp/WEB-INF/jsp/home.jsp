@@ -42,7 +42,7 @@
         <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="false">
             <c:forEach var="aktivitet" items="${aktivitetAndCount}">
                 <li>
-                    <a class="aktivitet" id="${aktivitet.key.id}" href="${pageContext.request.contextPath}/aktiviteter/${aktivitet.key.id}" data-icon="aktivitet-score" data-iconpos="right">${aktivitet.key.name}<span class="xp">xp</span><span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span></a>
+                    <a name="${aktivitet.key.id}" class="aktivitet" id="${aktivitet.key.id}" href="${pageContext.request.contextPath}/aktiviteter/${aktivitet.key.id}" data-icon="aktivitet-score" data-iconpos="right">${aktivitet.key.name}<span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span></a>
                 </li>
             </c:forEach>
         </ul>
@@ -69,6 +69,13 @@
         }
     </script>
     <%@include file="include/footer.jsp"%>
+    <script>
+        $(".navbutton").each(function(index, value){
+            var jqvalue = $(value);
+            jqvalue.removeClass("ui-btn-active");
+        });
+        $("#aktiviteterbutton").addClass("ui-btn-active");
+    </script>
 </div>
 </body>
 </html>
