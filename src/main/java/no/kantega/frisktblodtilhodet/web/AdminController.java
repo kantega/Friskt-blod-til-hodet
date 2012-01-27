@@ -8,17 +8,19 @@ import no.kantega.frisktblodtilhodet.model.Person;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
 import no.kantega.frisktblodtilhodet.service.GruppeRepository;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +36,8 @@ public class AdminController {
 
     @Autowired
     private PersonRepository personRepository;
+    
+    private File informationTextFile;
 
     @RequestMapping(method = RequestMethod.GET)
     public String admin(Model model){
@@ -45,7 +49,25 @@ public class AdminController {
             aktivitetTyper.add(aktivitetType.name());
         }
         model.addAttribute("aktivitetsTyper", aktivitetTyper);
+        model.addAttribute("informationtext", getInformationText());
         return "admin";
+    }
+
+    private String getInformationText() {
+        String text = "";
+        try {
+            text = IOUtils.toString(new FileReader(informationTextFile));
+        } catch (IOException e) {}
+
+        return text;
+    }
+
+    @RequestMapping(value = "/information", method = RequestMethod.POST)
+    public ResponseEntity saveInformation(@RequestParam String informationText) throws IOException {
+
+        IOUtils.write(informationText, new FileOutputStream(informationTextFile));
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/person", method = RequestMethod.POST)
@@ -77,4 +99,8 @@ public class AdminController {
         binder.registerCustomEditor(Gruppe.class, new BindByIdEditor(gruppeRepository));
     }
 
+    @Autowired
+    public void setDataDir(File dataDir){
+        informationTextFile = new File(dataDir, "informationFile");
+    }
 }

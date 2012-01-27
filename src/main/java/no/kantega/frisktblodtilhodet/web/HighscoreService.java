@@ -155,7 +155,9 @@ public class HighscoreService {
                 CriteriaQuery<Object> selectSum = query.select(cb.sum(from.get(UtfortAktivitet_.poeng))).where(cb.equal(from.get(UtfortAktivitet_.person), person));
                 TypedQuery<Object> query1 = entityManager.createQuery(selectSum);
                 Integer personSum = (Integer) query1.getSingleResult();
-                groupSum += personSum;
+                if (person != null) {
+                    groupSum += personSum;
+                }
             }
             avg.put(gruppe, (double)groupSum / (double)gruppe.getPersons().size());
         }

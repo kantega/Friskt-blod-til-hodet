@@ -74,6 +74,16 @@
             </form>
 
         </div>
+
+        <div class="admin" id="information">
+            <form class="adminForm" id="informationForm" method="post" action="${pageContext.request.contextPath}/admin/information">
+                <fieldset>
+                    <label for="informationtext">Informasjonstekst</label>
+                    <textarea name="informationText" id="informationtext">${informationtext}</textarea>
+                    <input type="submit" value="Lagre">
+                </fieldset>
+            </form>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
