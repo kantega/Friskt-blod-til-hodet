@@ -8,7 +8,7 @@
 
 	<annotation-driven />
 
-	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/resources/**" location="/resources/" cache-period="0" />
 
     <view-controller path="/login" view-name="login"/>
 

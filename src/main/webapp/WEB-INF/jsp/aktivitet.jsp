@@ -21,7 +21,7 @@
                 <div data-role="fieldcontain">
                     <fieldset data-role="controlgroup" data-type="horizontal" >
                         <label for="mengde">Mengde</label>
-                        <input name="mengde" id="mengde" type="number" value="0">
+                        <input name="mengde" id="mengde" type="number" value="1">
                         <c:if test="${not empty aktivitet.mengdeDescription}"><label for="mengde">${aktivitet.mengdeDescription}</label></c:if>
                     </fieldset>
                 </div>
@@ -41,8 +41,8 @@
             <input type="hidden" name="person" id="person" value="">
         </form>
         <div data-role="controlgroup" data-type="horizontal">
-            <a href="${pageContext.request.contextPath}" data-role="button" id="cancel">Avbryt</a>
-            <a href="${pageContext.request.contextPath}/?utfortaktivitet=${aktivitet.id}#${aktivitet.id}" data-ajax="false" data-role="button" id="ok">Ok</a>
+            <a href="${pageContext.request.contextPath}/" data-ajax="false" data-role="button" id="cancel">Avbryt</a>
+            <a href="${pageContext.request.contextPath}/?utfortaktivitet=${aktivitet.id}" data-ajax="false" data-role="button" id="ok">Ok</a>
         </div>
     </div>
     <script>
@@ -57,6 +57,11 @@
                 });
                 return true;
             });
+
+            $('#aktivitetForm').submit(function(event){
+                event.preventDefault();
+                return false;
+            })
         });
     </script>
     <%@include file="include/footer.jsp"%>

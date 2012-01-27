@@ -12,6 +12,6 @@
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/favicon.ico">
 <link href="${pageContext.request.contextPath}/resources/css/jquery.mobile-1.0.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <link rel="apple-touch-startup-image" href="${pageContext.request.contextPath}/resources/images/logo.png"/>

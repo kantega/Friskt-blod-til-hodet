@@ -51,13 +51,6 @@
         </div>
     </div>
     <%@include file="../include/footer.jsp"%>
-    <script>
-        $(".navbutton").each(function(index, value){
-            var jqvalue = $(value);
-            jqvalue.removeClass("ui-btn-active");
-            $("#highscorebutton").addClass("ui-btn-active");
-        })
-    </script>
 </div>
 </body>
 </html>
