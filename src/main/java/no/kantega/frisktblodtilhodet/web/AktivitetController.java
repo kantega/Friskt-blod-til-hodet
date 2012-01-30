@@ -45,6 +45,10 @@ public class AktivitetController {
         return "home";
     }
 
+    @RequestMapping(value = "/aktiviteter", method = RequestMethod.GET)
+    public String getAktiviteter2(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, Model model){
+        return getAktiviteter(username, model);
+    }
     @RequestMapping(value = "/aktiviteter/{aktivitet}", method = RequestMethod.GET)
     public String visAktivitet(@PathVariable Aktivitet aktivitet, Model model){
         model.addAttribute("aktivitet", aktivitet);
