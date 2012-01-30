@@ -48,11 +48,27 @@ li.highscore{
     clear: both;
 }
 
+.onhighscore {
+    color: #ffffff;
+    background-color: #c43e14;
+
+}
+
+.onhighscore .score{
+    color: #c43e14;
+    background: url("../images/whitestar.png") no-repeat;
+}
+
+.position {
+    font-size: 130%;
+    margin-right: 15px;
+}
+
 .mengdeDescription {
     visibility: hidden;
 }
 
-html.ui-mobile body.ui-mobile-viewport div#login.ui-page {
+html.ui-mobile body.ui-mobile-viewport {
     background-image: url("../images/bg-tile.jpg")
 }
 
