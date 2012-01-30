@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.SortedMap;
 
 @Controller
 @RequestMapping("/highscore")
@@ -37,12 +39,18 @@ public class HighscoreController {
     @Autowired
     private GruppeRepository gruppeRepository;
 
+    private int numberOfEntries = 10;
+
     @RequestMapping
-    public String index(Model model){
+    public String index(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, Model model){
         model.addAttribute("aktiviteter", aktivitetRepository.findAll());
 
-        Map<Person, Integer> scores = highscoreService.getPersonAndScore();
-        model.addAttribute("personAndCount", scores);
+        Map<Person, Integer> allScores = highscoreService.getPersonAndScore();
+        Map<Person, Integer> limitedNumberOfScores = getFirstNEntries(allScores);
+
+        model.addAttribute("standing", getPersonStanding(allScores, personRepository.findByUsername(username)));
+        model.addAttribute("total", allScores.size());
+        model.addAttribute("personAndCount", limitedNumberOfScores);
         return "highscore/highscore";
     }
 
@@ -50,17 +58,49 @@ public class HighscoreController {
     public String getForMinGruppe(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, Model model){
         Person person = personRepository.findByUsername(username);
         Gruppe gruppe = person.getGruppe();
-        Map<Person, Integer> scores = highscoreService.getPersonsAndScoreForGruppe(gruppe);
-        model.addAttribute("personAndCount", scores);
+        SortedMap<Person, Integer> allScores = highscoreService.getPersonsAndScoreForGruppe(gruppe);
+        Map<Person, Integer> limitedNumberOfScores = getFirstNEntries(allScores);
+
+
+        model.addAttribute("standing", getPersonStanding(allScores, person));
+        model.addAttribute("total", allScores.size());
+        model.addAttribute("personAndCount", limitedNumberOfScores);
         return "highscore/list";
+    }
+
+    private Integer getPersonStanding(Map<Person, Integer> allScores, Person person) {
+        int i = 1;
+        for(Person p : allScores.keySet()){
+            if(p.equals(person)){
+                break;
+            }
+            i++;
+        }
+        return i;
+    }
+
+    private Map<Person, Integer> getFirstNEntries(Map<Person, Integer> allScores) {
+        Map<Person, Integer> limitedMap = new LinkedHashMap<Person, Integer>();
+        for (Map.Entry<Person, Integer> entry : allScores.entrySet()) {
+            limitedMap.put(entry.getKey(), entry.getValue());
+            if(limitedMap.size() == numberOfEntries ){
+                break;
+            }
+        }
+        return limitedMap;
     }
 
     @RequestMapping(value = "/Mingruppe/{aktivitet}")
     public String getForAktivitetForMinGruppe(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, @PathVariable Aktivitet aktivitet, Model model){
         Person person = personRepository.findByUsername(username);
         Gruppe gruppe = person.getGruppe();
-        Map<Person, Integer> scores = highscoreService.getPersonsAndScoreForGruppeAndAktivitet(gruppe, aktivitet);
-        model.addAttribute("personAndCount", scores);
+        SortedMap<Person, Integer> allScores = highscoreService.getPersonsAndScoreForGruppeAndAktivitet(gruppe, aktivitet);
+        Map<Person, Integer> limitedNumberOfScores = getFirstNEntries(allScores);
+
+
+        model.addAttribute("standing", getPersonStanding(allScores, person));
+        model.addAttribute("total", allScores.size());
+        model.addAttribute("personAndCount", limitedNumberOfScores);
         return "highscore/list";
     }
 
@@ -79,14 +119,19 @@ public class HighscoreController {
     }
 
     @RequestMapping(value = "/Totalt/Alle")
-    public String getTotalForAlle(Model model){
-        return index(model);
+    public String getTotalForAlle(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, Model model){
+        return index(username, model);
     }
 
     @RequestMapping(value = "/Totalt/{aktivitet}")
-    public String getTotalForAktivitet(@PathVariable Aktivitet aktivitet, Model model){
-        Map<Person, Integer> scores = highscoreService.getPersonsAndScoreForAktivitet(aktivitet);
-        model.addAttribute("personAndCount", scores);
+    public String getTotalForAktivitet(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, @PathVariable Aktivitet aktivitet, Model model){
+        Map<Person, Integer> allScores = highscoreService.getPersonsAndScoreForAktivitet(aktivitet);
+        Map<Person, Integer> limitedNumberOfScores = getFirstNEntries(allScores);
+
+
+        model.addAttribute("standing", getPersonStanding(allScores, personRepository.findByUsername(username)));
+        model.addAttribute("total", allScores.size());
+        model.addAttribute("personAndCount", limitedNumberOfScores);
         return "highscore/list";
     }
 

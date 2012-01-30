@@ -57,7 +57,7 @@ public class HighscoreService {
         }
     }
 
-    public Map<Person, Integer> getPersonAndScore() {
+    public SortedMap<Person, Integer> getPersonAndScore() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
@@ -69,7 +69,7 @@ public class HighscoreService {
         return addResultToMap(select);
     }
 
-    public Map<Person, Integer> getPersonsAndScoreForAktivitet(Aktivitet aktivitet) {
+    public SortedMap<Person, Integer> getPersonsAndScoreForAktivitet(Aktivitet aktivitet) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
@@ -81,20 +81,31 @@ public class HighscoreService {
         return addResultToMap(q);
     }
 
-    private Map<Person, Integer> addResultToMap(CriteriaQuery<Object> q) {
+    private SortedMap<Person, Integer> addResultToMap(CriteriaQuery<Object> q) {
         TypedQuery<Object> query1 = entityManager.createQuery(q);
         List<Object> resultList = query1.getResultList();
-        Map<Person, Integer> personAndCount = new HashMap<Person, Integer>();
+        Map<Person, Integer> personAndCount = new LinkedHashMap<Person, Integer>();
         for (Object o : resultList) {
             Object[] result = (Object[]) o;
             Integer count = (Integer) result[0];
             Person p = (Person) result[1];
             personAndCount.put(p, count);
         }
-        return personAndCount;
+        return getSortedPersonMap(personAndCount);
     }
 
-    public Map<Person, Integer> getPersonsAndScoreForGruppe(Gruppe gruppe) {
+    private SortedMap<Person, Integer> getSortedPersonMap(final Map<Person, Integer> personAndCount) {
+        SortedMap<Person, Integer> sortedMap = new TreeMap<Person, Integer>(new Comparator<Person>() {
+            @Override
+            public int compare(Person o1, Person o2) {
+                return personAndCount.get(o1).compareTo(personAndCount.get(o2));
+            }
+        });
+        sortedMap.putAll(personAndCount);
+        return sortedMap;
+    }
+
+    public SortedMap<Person, Integer> getPersonsAndScoreForGruppe(Gruppe gruppe) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
@@ -107,7 +118,7 @@ public class HighscoreService {
         return addResultToMap(q);
     }
 
-    public Map<Person, Integer> getPersonsAndScoreForGruppeAndAktivitet(Gruppe gruppe, Aktivitet aktivitet) {
+    public SortedMap<Person, Integer> getPersonsAndScoreForGruppeAndAktivitet(Gruppe gruppe, Aktivitet aktivitet) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
@@ -121,7 +132,7 @@ public class HighscoreService {
         return addResultToMap(q);
     }
 
-    public Map<Gruppe, Double> getGrupperAndScoreForAktivitet(Aktivitet aktivitet) {
+    public SortedMap<Gruppe, Double> getGrupperAndScoreForAktivitet(Aktivitet aktivitet) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
 
@@ -140,10 +151,10 @@ public class HighscoreService {
             avg.put(gruppe, (double)groupSum / (double)gruppe.getPersons().size());
         }
 
-        return getSortedMap(avg);
+        return getSortedGruppeMap(avg);
     }
 
-    public Map<Gruppe, Double> getGrupperAndScoreForAlle() {
+    public SortedMap<Gruppe, Double> getGrupperAndScoreForAlle() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
 
@@ -155,17 +166,17 @@ public class HighscoreService {
                 CriteriaQuery<Object> selectSum = query.select(cb.sum(from.get(UtfortAktivitet_.poeng))).where(cb.equal(from.get(UtfortAktivitet_.person), person));
                 TypedQuery<Object> query1 = entityManager.createQuery(selectSum);
                 Integer personSum = (Integer) query1.getSingleResult();
-                if (person != null) {
+                if (personSum != null) {
                     groupSum += personSum;
                 }
             }
             avg.put(gruppe, (double)groupSum / (double)gruppe.getPersons().size());
         }
 
-        return getSortedMap(avg);
+        return getSortedGruppeMap(avg);
     }
 
-    private TreeMap<Gruppe, Double> getSortedMap(final Map<Gruppe, Double> avg) {
+    private TreeMap<Gruppe, Double> getSortedGruppeMap(final Map<Gruppe, Double> avg) {
         TreeMap<Gruppe, Double> gruppeDoubleTreeMap = new TreeMap<Gruppe, Double>(new Comparator<Gruppe>() {
             @Override
             public int compare(Gruppe o1, Gruppe o2) {
