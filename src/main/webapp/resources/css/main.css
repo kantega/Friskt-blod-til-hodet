@@ -42,6 +42,9 @@ a .scoreIncrement {
 
 ul,li {
     list-style-type: none;
+}
+
+li.highscore{
     clear: both;
 }
 

@@ -171,7 +171,7 @@ public class HighscoreService {
             public int compare(Gruppe o1, Gruppe o2) {
                 Double v1 = avg.get(o1);
                 Double v2 = avg.get(o2);
-                return v1.compareTo(v2);
+                return v2.compareTo(v1);
             }
         });
         gruppeDoubleTreeMap.putAll(avg);
