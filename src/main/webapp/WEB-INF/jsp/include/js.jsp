@@ -14,4 +14,4 @@
 <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<link rel="apple-touch-startup-image" href="${pageContext.request.contextPath}/resources/images/logo.png"/>
+<link rel="apple-touch-startup-image" href="${pageContext.request.contextPath}/resources/images/blodtilhodet.png"/>

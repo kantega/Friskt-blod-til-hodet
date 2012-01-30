@@ -94,17 +94,6 @@ public class HighscoreService {
         return getSortedPersonMap(personAndCount);
     }
 
-    private SortedMap<Person, Integer> getSortedPersonMap(final Map<Person, Integer> personAndCount) {
-        SortedMap<Person, Integer> sortedMap = new TreeMap<Person, Integer>(new Comparator<Person>() {
-            @Override
-            public int compare(Person o1, Person o2) {
-                return personAndCount.get(o1).compareTo(personAndCount.get(o2));
-            }
-        });
-        sortedMap.putAll(personAndCount);
-        return sortedMap;
-    }
-
     public SortedMap<Person, Integer> getPersonsAndScoreForGruppe(Gruppe gruppe) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object> query = cb.createQuery();
@@ -187,5 +176,16 @@ public class HighscoreService {
         });
         gruppeDoubleTreeMap.putAll(avg);
         return gruppeDoubleTreeMap;
+    }
+
+    private SortedMap<Person, Integer> getSortedPersonMap(final Map<Person, Integer> personAndCount) {
+        SortedMap<Person, Integer> sortedMap = new TreeMap<Person, Integer>(new Comparator<Person>() {
+            @Override
+            public int compare(Person o1, Person o2) {
+                return personAndCount.get(o2).compareTo(personAndCount.get(o1));
+            }
+        });
+        sortedMap.putAll(personAndCount);
+        return sortedMap;
     }
 }

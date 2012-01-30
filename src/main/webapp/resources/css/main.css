@@ -42,6 +42,7 @@ a .scoreIncrement {
 
 ul,li {
     list-style-type: none;
+    clear: both;
 }
 
 .mengdeDescription {
