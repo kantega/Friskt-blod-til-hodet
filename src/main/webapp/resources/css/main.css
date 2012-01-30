@@ -6,7 +6,7 @@
 a .scoreIncrement {
     font-size: 1.6em;
     float: right;
-    background: url("/resources/images/redstar.png") no-repeat;
+    background: url("../images/redstar.png") no-repeat;
     background-size: 100%;
     min-width: 50px;
     min-height: 50px;
@@ -16,7 +16,7 @@ a .scoreIncrement {
 }
 
 .score {
-    background: url("/resources/images/redstar.png") no-repeat;
+    background: url("../images/redstar.png") no-repeat;
     background-size: 100%;
     min-width: 40px;
     min-height: 40px;
