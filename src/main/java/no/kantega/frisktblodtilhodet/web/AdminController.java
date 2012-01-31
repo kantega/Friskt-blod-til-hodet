@@ -1,15 +1,14 @@
 package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.editor.BindByIdEditor;
-import no.kantega.frisktblodtilhodet.model.Aktivitet;
-import no.kantega.frisktblodtilhodet.model.AktivitetType;
-import no.kantega.frisktblodtilhodet.model.Gruppe;
-import no.kantega.frisktblodtilhodet.model.Person;
+import no.kantega.frisktblodtilhodet.model.*;
 import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
 import no.kantega.frisktblodtilhodet.service.GruppeRepository;
+import no.kantega.frisktblodtilhodet.service.PeriodeRepository;
 import no.kantega.frisktblodtilhodet.service.PersonRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,7 +38,12 @@ public class AdminController {
     @Autowired
     private PersonRepository personRepository;
     
+    @Autowired
+    private PeriodeRepository periodeRepository;
+    
     private File informationTextFile;
+
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @RequestMapping(method = RequestMethod.GET)
     public String admin(Model model){
@@ -50,6 +56,7 @@ public class AdminController {
         }
         model.addAttribute("aktivitetsTyper", aktivitetTyper);
         model.addAttribute("informationtext", getInformationText());
+        model.addAttribute("currentPeriod", periodeRepository.findLatestPeriode());
         return "admin";
     }
 
@@ -94,9 +101,23 @@ public class AdminController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/nyPeriode", method = RequestMethod.POST)
+    public ResponseEntity startNyPeriode(@RequestParam Date stopDate){
+        Periode periode = new Periode();
+        periode.setStopdato(stopDate);
+        
+        Periode previousPeriode = periodeRepository.findLatestPeriode();
+        periode.setStartdato(previousPeriode.getStopdato());
+
+        periode = periodeRepository.save(periode);
+
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Gruppe.class, new BindByIdEditor(gruppeRepository));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
 
     @Autowired

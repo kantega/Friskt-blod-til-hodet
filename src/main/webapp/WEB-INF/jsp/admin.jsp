@@ -1,10 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE HTML>
 <html>
 <head>
     <title>Friskt blod til hodet – admin</title>
     <%@include file="include/js.jsp"%>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.8.17.custom.min.js"></script>
 </head>
 <body>
 <div data-role="page">
@@ -84,6 +86,17 @@
                 </fieldset>
             </form>
         </div>
+
+        <div class="admin" id="periode">
+            <form class="adminForm" id="periodeForm" method="post" action="${pageContext.request.contextPath}/admin/nyPeriode">
+                <fieldset>
+                    <p>Nåværende periode: <fmt:formatDate pattern="dd-MM-yyyy" value="${currentPeriod.startdato}" /> - <fmt:formatDate pattern="dd-MM-yyyy" value="${currentPeriod.stopdato}" /></p>
+                    <label for="nyperiode">Ny periode som slutter:</label>
+                    <input name="stopDate" id="nyperiode" type="date"/>
+                    <input type="submit" value="Lagre">
+                </fieldset>
+            </form>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -98,7 +111,10 @@
         if($('#aktivitettype').val() == "MengdeAktivitet"){
             $('.mengdeDescription').css('visibility', 'visible');
         }
-    })
+    });
+    var nyPeriode = $( "#nyperiode" );
+    nyPeriode.datepicker();
+    nyPeriode.datepicker( "option", "dateFormat", 'dd-mm-yy' );
 </script>
 </body>
 </html>

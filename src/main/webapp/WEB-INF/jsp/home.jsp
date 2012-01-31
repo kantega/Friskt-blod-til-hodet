@@ -6,7 +6,7 @@
 <head>
     <title>Friskt blod til hodet</title>
     <%@include file="include/js.jsp"%>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.8.17.custom.min.js"></script>
     <script>
         var username = localStorage.getItem('username');
         if(username == undefined || username == null){
