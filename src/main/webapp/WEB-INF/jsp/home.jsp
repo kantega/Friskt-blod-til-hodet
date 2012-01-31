@@ -9,7 +9,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.8.16.custom.min.js"></script>
     <script>
         var username = localStorage.getItem('username');
-        if(username == undefined){
+        if(username == undefined || username == null){
             window.location = '${pageContext.request.contextPath}/login'
         }
 

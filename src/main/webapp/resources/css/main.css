@@ -57,6 +57,7 @@ li.highscore{
 .onhighscore .score{
     color: #c43e14;
     background: url("../images/whitestar.png") no-repeat;
+    background-size: 100%;
 }
 
 .position {

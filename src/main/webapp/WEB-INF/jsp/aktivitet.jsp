@@ -41,8 +41,8 @@
             <input type="hidden" name="person" id="person" value="">
         </form>
         <div data-role="controlgroup" data-type="horizontal">
-            <a href="${pageContext.request.contextPath}/" data-ajax="false" data-role="button" id="cancel">Avbryt</a>
-            <a href="${pageContext.request.contextPath}/?utfortaktivitet=${aktivitet.id}" data-ajax="false" data-role="button" id="ok">Ok</a>
+            <a href="${pageContext.request.contextPath}/aktiviteter" data-ajax="false" data-role="button" id="cancel">Avbryt</a>
+            <a href="${pageContext.request.contextPath}/aktiviteter?utfortaktivitet=${aktivitet.id}" data-ajax="false" data-role="button" id="ok">Ok</a>
         </div>
     </div>
     <script>
