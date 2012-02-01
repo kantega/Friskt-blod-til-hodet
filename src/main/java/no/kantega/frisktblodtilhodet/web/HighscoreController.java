@@ -45,7 +45,7 @@ public class HighscoreController {
         Map<Person, Integer> allScores = highscoreService.getPersonAndScore();
         Map<Person, Integer> limitedNumberOfScores = getFirstNEntries(allScores);
 
-        model.addAttribute("standing", getPersonStanding(allScores, personRepository.findByUsername(username)));
+        model.addAttribute("standing", getStanding(allScores, personRepository.findByUsername(username)));
         model.addAttribute("total", allScores.size());
         model.addAttribute("personAndCount", limitedNumberOfScores);
         return "highscore/highscore";
@@ -65,16 +65,16 @@ public class HighscoreController {
         Map<Person, Integer> limitedNumberOfScores = getFirstNEntries(allScores);
 
 
-        model.addAttribute("standing", getPersonStanding(allScores, person));
+        model.addAttribute("standing", getStanding(allScores, person));
         model.addAttribute("total", allScores.size());
         model.addAttribute("personAndCount", limitedNumberOfScores);
         return "highscore/list";
     }
 
-    private Integer getPersonStanding(Map<Person, Integer> allScores, Person person) {
+    private Integer getStanding(Map allScores, Object object) {
         int i = 1;
-        for(Person p : allScores.keySet()){
-            if(p.equals(person)){
+        for(Object o : allScores.keySet()){
+            if(o.equals(object)){
                 break;
             }
             i++;
@@ -101,22 +101,28 @@ public class HighscoreController {
         Map<Person, Integer> limitedNumberOfScores = getFirstNEntries(allScores);
 
 
-        model.addAttribute("standing", getPersonStanding(allScores, person));
+        model.addAttribute("standing", getStanding(allScores, person));
         model.addAttribute("total", allScores.size());
         model.addAttribute("personAndCount", limitedNumberOfScores);
         return "highscore/list";
     }
 
     @RequestMapping(value = "/Grupper/{aktivitet}")
-    public String getForAktivitetForGrupper(@PathVariable Aktivitet aktivitet, Model model){
+    public String getForAktivitetForGrupper(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, @PathVariable Aktivitet aktivitet, Model model){
         Map<Gruppe, Double> scores = highscoreService.getGrupperAndScoreForAktivitet(aktivitet);
+        Person person = personRepository.findByUsername(username);
+
+        model.addAttribute("standing", getStanding(scores, person.getGruppe()));
         model.addAttribute("personAndCount", scores);
         return "highscore/list";
     }
 
     @RequestMapping(value = "/Grupper/Alle")
-    public String getForAlleForGruppe(Model model){
+    public String getForAlleForGruppe(@CookieValue(value = "USERNAME", required = false, defaultValue = "") String username, Model model){
         Map<Gruppe, Double> scores = highscoreService.getGrupperAndScoreForAlle();
+        Person person = personRepository.findByUsername(username);
+
+        model.addAttribute("standing", getStanding(scores, person.getGruppe()));
         model.addAttribute("personAndCount", scores);
         return "highscore/list";
     }
@@ -127,7 +133,7 @@ public class HighscoreController {
         Map<Person, Integer> limitedNumberOfScores = getFirstNEntries(allScores);
 
 
-        model.addAttribute("standing", getPersonStanding(allScores, personRepository.findByUsername(username)));
+        model.addAttribute("standing", getStanding(allScores, personRepository.findByUsername(username)));
         model.addAttribute("total", allScores.size());
         model.addAttribute("personAndCount", limitedNumberOfScores);
         return "highscore/list";
