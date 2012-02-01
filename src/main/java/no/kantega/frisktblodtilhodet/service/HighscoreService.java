@@ -19,6 +19,9 @@ public class HighscoreService {
     @Autowired
     private GruppeRepository gruppeRepository;
 
+    @Autowired
+    private PeriodeRepository periodeRepository;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -31,7 +34,10 @@ public class HighscoreService {
         Path<Person> p = from.get(UtfortAktivitet_.person);
         Path<Aktivitet> aktivitet = from.get(UtfortAktivitet_.aktivitet);
 
-        CriteriaQuery<Object> multiselect = cq.multiselect(sum, aktivitet).where(cb.equal(p, person)).orderBy(cb.desc(sum)).groupBy(aktivitet);
+        Predicate utfortPersonEqPerson = cb.equal(p, person);
+        Predicate and = getlatestPeriodPredicate(cb, from, utfortPersonEqPerson);
+
+        CriteriaQuery<Object> multiselect = cq.multiselect(sum, aktivitet).where(and).orderBy(cb.desc(sum)).groupBy(aktivitet);
 
         TypedQuery<Object> query = entityManager.createQuery(multiselect);
         List<Object> resultList = query.getResultList();
@@ -44,6 +50,23 @@ public class HighscoreService {
 
         addNotPresentAktivitetAndZeroCount(aktivitetAndCountByPerson);
         return aktivitetAndCountByPerson;
+    }
+
+    private Predicate getlatestPeriodPredicate(CriteriaBuilder cb, Root<UtfortAktivitet> from, Predicate additionalPredicate) {
+        Periode sistePeriode = periodeRepository.findLatestPeriode();
+
+        Calendar start = new GregorianCalendar();
+        start.setTime(sistePeriode.getStartdato());
+        Calendar end = new GregorianCalendar();
+        end.setTime(sistePeriode.getStopdato());
+        Predicate timeGtStart = cb.greaterThan(from.get(UtfortAktivitet_.time), start);
+        Predicate timeLtStio= cb.lessThan(from.get(UtfortAktivitet_.time), end);
+
+        if (additionalPredicate != null) {
+            return cb.and(additionalPredicate, timeGtStart, timeLtStio);
+        } else {
+            return cb.and(timeGtStart, timeLtStio);
+        }
     }
 
     private void addNotPresentAktivitetAndZeroCount(Map<Aktivitet, Integer> aktivitetAndCountByPerson) {
@@ -62,7 +85,8 @@ public class HighscoreService {
         Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
         Path<Person> person = from.get(UtfortAktivitet_.person);
 
-        CriteriaQuery<Object> select = query.multiselect(sum, person).orderBy(cb.desc(sum)).groupBy(person);
+        Predicate and = getlatestPeriodPredicate(cb, from, null);
+        CriteriaQuery<Object> select = query.multiselect(sum, person).where(and).orderBy(cb.desc(sum)).groupBy(person);
 
         return addResultToMap(select);
     }
@@ -75,7 +99,9 @@ public class HighscoreService {
         Path<Person> person = from.get(UtfortAktivitet_.person);
         Path<Aktivitet> aktivitetPath = from.get(UtfortAktivitet_.aktivitet);
 
-        CriteriaQuery<Object> q = query.multiselect(sum, person).where(cb.equal(aktivitetPath, aktivitet)).orderBy(cb.desc(sum)).groupBy(person);
+        Predicate utfortAktivitetEquals = cb.equal(aktivitetPath, aktivitet);
+        Predicate predicate = getlatestPeriodPredicate(cb, from, utfortAktivitetEquals);
+        CriteriaQuery<Object> q = query.multiselect(sum, person).where(predicate).orderBy(cb.desc(sum)).groupBy(person);
         return addResultToMap(q);
     }
 
@@ -100,7 +126,9 @@ public class HighscoreService {
         Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
         Path<Person> person = from.get(UtfortAktivitet_.person);
 
-        CriteriaQuery<Object> q = query.multiselect(sum, person).where(cb.equal(personfrom.get(Person_.gruppe), gruppe)).orderBy(cb.desc(sum)).groupBy(person);
+        Predicate utfortPersonGruppeEqGruppe = cb.equal(personfrom.get(Person_.gruppe), gruppe);
+        Predicate predicate = getlatestPeriodPredicate(cb, from, utfortPersonGruppeEqGruppe);
+        CriteriaQuery<Object> q = query.multiselect(sum, person).where(predicate).orderBy(cb.desc(sum)).groupBy(person);
 
         return addResultToMap(q);
     }
@@ -114,7 +142,8 @@ public class HighscoreService {
         Path<Person> person = from.get(UtfortAktivitet_.person);
 
         Predicate and = cb.and(cb.equal(personfrom.get(Person_.gruppe), gruppe), cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet));
-        CriteriaQuery<Object> q = query.multiselect(sum, person).where(and).orderBy(cb.desc(sum)).groupBy(person);
+        Predicate predicate = getlatestPeriodPredicate(cb, from, and);
+        CriteriaQuery<Object> q = query.multiselect(sum, person).where(predicate).orderBy(cb.desc(sum)).groupBy(person);
 
         return addResultToMap(q);
     }
@@ -128,7 +157,10 @@ public class HighscoreService {
         for (Gruppe gruppe : gruppeRepository.findAllLeafGrupper()){
             int groupSum = 0;
             for (Person person : gruppe.getPersons()) {
-                CriteriaQuery<Object> selectSum = query.select(cb.sum(from.get(UtfortAktivitet_.poeng))).where(cb.and(cb.equal(from.get(UtfortAktivitet_.person), person), cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet)));
+                Predicate predicate = getlatestPeriodPredicate(cb, from, cb.and(cb.equal(from.get(UtfortAktivitet_.person), person), cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet)));
+
+                CriteriaQuery<Object> selectSum = query.select(cb.sum(from.get(UtfortAktivitet_.poeng))).where(predicate);
+
                 TypedQuery<Object> query1 = entityManager.createQuery(selectSum);
                 Integer personSum = (Integer) query1.getSingleResult();
                 if (personSum != null) {
@@ -150,7 +182,10 @@ public class HighscoreService {
         for (Gruppe gruppe : gruppeRepository.findAllLeafGrupper()){
             int groupSum = 0;
             for (Person person : gruppe.getPersons()) {
-                CriteriaQuery<Object> selectSum = query.select(cb.sum(from.get(UtfortAktivitet_.poeng))).where(cb.equal(from.get(UtfortAktivitet_.person), person));
+                Predicate equal = cb.equal(from.get(UtfortAktivitet_.person), person);
+                Predicate predicate = getlatestPeriodPredicate(cb, from, equal);
+
+                CriteriaQuery<Object> selectSum = query.select(cb.sum(from.get(UtfortAktivitet_.poeng))).where(predicate);
                 TypedQuery<Object> query1 = entityManager.createQuery(selectSum);
                 Integer personSum = (Integer) query1.getSingleResult();
                 if (personSum != null) {

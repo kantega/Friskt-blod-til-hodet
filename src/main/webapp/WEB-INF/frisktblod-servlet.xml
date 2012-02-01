@@ -17,5 +17,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 
+    <beans:bean class="no.kantega.frisktblodtilhodet.service.HighscoreService" />
+
 	<context:component-scan base-package="no.kantega.frisktblodtilhodet.web" />
 </beans:beans>

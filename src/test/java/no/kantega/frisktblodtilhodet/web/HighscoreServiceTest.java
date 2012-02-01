@@ -12,6 +12,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
@@ -35,6 +36,9 @@ public class HighscoreServiceTest {
     
     @Autowired
     private HighscoreService highscoreService;
+    
+    @Autowired
+    private PeriodeRepository periodeRepository;
 
     private Gruppe g1;
     private Gruppe g2;
@@ -42,6 +46,11 @@ public class HighscoreServiceTest {
 
     @Before
     public void populate(){
+        Periode p = new Periode();
+        p.setStopdato(new Date(3000, 1,1));
+        p.setStartdato(new Date(0));
+        p = periodeRepository.saveAndFlush(p);
+        
         g1 = new Gruppe();
         g1.setName("Derp");
         g1 = gruppeRepository.save(g1);
