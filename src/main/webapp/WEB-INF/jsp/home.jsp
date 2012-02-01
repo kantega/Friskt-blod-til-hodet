@@ -6,7 +6,6 @@
 <head>
     <title>Friskt blod til hodet</title>
     <%@include file="include/js.jsp"%>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.8.17.custom.min.js"></script>
     <script>
         var username = localStorage.getItem('username');
         if(username == undefined || username == null){
@@ -47,27 +46,6 @@
             </c:forEach>
         </ul>
     </div>
-    <script>
-        var urlParam = $.urlParam("utfortaktivitet");
-        var scores = $("span.score");
-        if(urlParam != 0){
-            scores.each(function(index, value){
-                var jqvalue = $(value);
-                if(jqvalue.attr("id") == urlParam){
-                    var score = jqvalue.text();
-                    setTimeout(function(){
-                        jqvalue.text(parseInt(score) + 1);
-                        setTimeout(function(){
-                            jqvalue.switchClass( "scoreIncrement", "score", 1000 );
-                        }, 300);
-                    },1000);
-                    jqvalue.switchClass( "score", "scoreIncrement", 1000 );
-
-                    return false;
-                }
-            })
-        }
-    </script>
     <%@include file="include/footer.jsp"%>
 </div>
 </body>
