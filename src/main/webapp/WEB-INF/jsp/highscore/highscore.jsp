@@ -17,14 +17,14 @@
         <nav id="velgHighscore">
             <fieldset data-role="controlgroup" data-type="horizontal">
                 <label for="velggruppe" class="ui-hidden-accessible">Velg gruppe</label>
-                <select id="velggruppe">
+                <select id="velggruppe" data-role="none">
                     <option value="Totalt">Totalt</option>
                     <option value="Grupper">Grupper</option>
                     <option value="Mingruppe">Innad i min gruppe</option>
                 </select>
 
                 <label for="velgaktivitet" class="ui-hidden-accessible">Velg aktivitet</label>
-                <select id="velgaktivitet">
+                <select id="velgaktivitet" data-role="none">
                     <option value="Alle">Alle</option>
                     <c:forEach var="aktivitet" items="${aktiviteter}">
                         <option value="${aktivitet.id}">${aktivitet.name}</option>
