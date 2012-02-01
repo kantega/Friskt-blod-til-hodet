@@ -1,10 +1,7 @@
 package no.kantega.frisktblodtilhodet.web;
 
 import no.kantega.frisktblodtilhodet.model.*;
-import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
-import no.kantega.frisktblodtilhodet.service.GruppeRepository;
-import no.kantega.frisktblodtilhodet.service.PersonRepository;
-import no.kantega.frisktblodtilhodet.service.UtfortAktivitetRepository;
+import no.kantega.frisktblodtilhodet.service.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

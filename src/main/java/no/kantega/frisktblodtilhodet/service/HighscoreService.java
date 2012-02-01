@@ -1,8 +1,6 @@
-package no.kantega.frisktblodtilhodet.web;
+package no.kantega.frisktblodtilhodet.service;
 
 import no.kantega.frisktblodtilhodet.model.*;
-import no.kantega.frisktblodtilhodet.service.AktivitetRepository;
-import no.kantega.frisktblodtilhodet.service.GruppeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

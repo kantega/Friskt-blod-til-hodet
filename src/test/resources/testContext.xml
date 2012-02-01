@@ -9,5 +9,5 @@
         <property name="location" value="classpath:frisktblod.properties" />
     </bean>
 
-    <bean class="no.kantega.frisktblodtilhodet.web.HighscoreService"/>
+    <bean class="no.kantega.frisktblodtilhodet.service.HighscoreService"/>
 </beans>
