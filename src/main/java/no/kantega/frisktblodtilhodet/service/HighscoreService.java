@@ -2,6 +2,7 @@ package no.kantega.frisktblodtilhodet.service;
 
 import no.kantega.frisktblodtilhodet.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -37,7 +38,7 @@ public class HighscoreService {
         Predicate utfortPersonEqPerson = cb.equal(p, person);
         Predicate and = getlatestPeriodPredicate(cb, from, utfortPersonEqPerson);
 
-        CriteriaQuery<Object> multiselect = cq.multiselect(sum, aktivitet).where(and).orderBy(cb.desc(sum)).groupBy(aktivitet);
+        CriteriaQuery<Object> multiselect = cq.multiselect(sum, aktivitet).where(and).orderBy(cb.desc(sum), cb.asc(aktivitet.get(Aktivitet_.name))).groupBy(aktivitet);
 
         TypedQuery<Object> query = entityManager.createQuery(multiselect);
         List<Object> resultList = query.getResultList();
@@ -70,7 +71,7 @@ public class HighscoreService {
     }
 
     private void addNotPresentAktivitetAndZeroCount(Map<Aktivitet, Integer> aktivitetAndCountByPerson) {
-        for(Aktivitet aktivitet : aktivitetRepository.findAll()){
+        for(Aktivitet aktivitet : aktivitetRepository.findAll(new Sort(new Sort.Order(Aktivitet_.name.getName())))){
             boolean notPresent = !aktivitetAndCountByPerson.containsKey(aktivitet);
             if(notPresent){
                 aktivitetAndCountByPerson.put(aktivitet, 0);
