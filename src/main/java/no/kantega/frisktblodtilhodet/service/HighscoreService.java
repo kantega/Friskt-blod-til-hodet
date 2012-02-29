@@ -125,11 +125,12 @@ public class HighscoreService {
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
         Root<Person> personfrom = query.from(Person.class);
         Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
-        Path<Person> person = from.get(UtfortAktivitet_.person);
 
         Predicate utfortPersonGruppeEqGruppe = cb.equal(personfrom.get(Person_.gruppe), gruppe);
-        Predicate predicate = getlatestPeriodPredicate(cb, from, utfortPersonGruppeEqGruppe);
-        CriteriaQuery<Object> q = query.multiselect(sum, person).where(predicate).orderBy(cb.desc(sum)).groupBy(person);
+        Predicate utfortPersonEquals = cb.equal(from.get(UtfortAktivitet_.person), personfrom);
+
+        Predicate predicate = getlatestPeriodPredicate(cb, from, cb.and(utfortPersonGruppeEqGruppe, utfortPersonEquals));
+        CriteriaQuery<Object> q = query.multiselect(sum, personfrom).where(predicate).orderBy(cb.desc(sum)).groupBy(personfrom);
 
         return addResultToMap(q);
     }
@@ -140,11 +141,14 @@ public class HighscoreService {
         Root<UtfortAktivitet> from = query.from(UtfortAktivitet.class);
         Root<Person> personfrom = query.from(Person.class);
         Expression<Integer> sum = cb.sum(from.get(UtfortAktivitet_.poeng));
-        Path<Person> person = from.get(UtfortAktivitet_.person);
 
-        Predicate and = cb.and(cb.equal(personfrom.get(Person_.gruppe), gruppe), cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet));
+        Predicate gruppeEqual = cb.equal(personfrom.get(Person_.gruppe), gruppe);
+        Predicate utfortAktivitetEqual = cb.equal(from.get(UtfortAktivitet_.aktivitet), aktivitet);
+        Predicate utfortPersonEquals = cb.equal(from.get(UtfortAktivitet_.person), personfrom);
+
+        Predicate and = cb.and(gruppeEqual, utfortAktivitetEqual, utfortPersonEquals);
         Predicate predicate = getlatestPeriodPredicate(cb, from, and);
-        CriteriaQuery<Object> q = query.multiselect(sum, person).where(predicate).orderBy(cb.desc(sum)).groupBy(person);
+        CriteriaQuery<Object> q = query.multiselect(sum, personfrom).where(predicate).orderBy(cb.desc(sum)).groupBy(personfrom);
 
         return addResultToMap(q);
     }
