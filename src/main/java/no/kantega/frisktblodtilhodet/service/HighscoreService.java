@@ -216,7 +216,12 @@ public class HighscoreService {
         SortedMap<Person, Integer> sortedMap = new TreeMap<Person, Integer>(new Comparator<Person>() {
             @Override
             public int compare(Person o1, Person o2) {
-                return personAndCount.get(o2).compareTo(personAndCount.get(o1));
+                Integer integer = personAndCount.get(o2);
+                int i = integer.compareTo(personAndCount.get(o1));
+                if(i == 0){ // If 0 is returned, only the first is in the sorted map.
+                    i = -1;
+                }
+                return i;
             }
         });
         sortedMap.putAll(personAndCount);
