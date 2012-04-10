@@ -92,7 +92,7 @@
                 <fieldset>
                     <p>Nåværende periode: <fmt:formatDate pattern="dd-MM-yyyy" value="${currentPeriod.startdato}" /> - <fmt:formatDate pattern="dd-MM-yyyy" value="${currentPeriod.stopdato}" /></p>
                     <label for="nyperiode">Ny periode som slutter:</label>
-                    <input name="stopDate" id="nyperiode" type="date"/>
+                    <input name="stopDate" id="nyperiode" type="date" />
                     <input type="submit" value="Lagre">
                 </fieldset>
             </form>
@@ -114,7 +114,7 @@
     });
     var nyPeriode = $( "#nyperiode" );
     nyPeriode.datepicker();
-    nyPeriode.datepicker( "option", "dateFormat", 'dd-mm-yy' );
+    nyPeriode.datepicker( "option", "dateFormat", 'yyyy-mm-dd' );
 </script>
 </body>
 </html>

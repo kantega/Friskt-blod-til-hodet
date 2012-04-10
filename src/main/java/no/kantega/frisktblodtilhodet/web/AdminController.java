@@ -43,7 +43,7 @@ public class AdminController {
     
     private File informationTextFile;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @RequestMapping(method = RequestMethod.GET)
     public String admin(Model model){
