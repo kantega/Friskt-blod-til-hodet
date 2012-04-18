@@ -35,6 +35,15 @@
 <div id="aktiviteter" data-role="page">
     <div data-role="header">
         <img class="headerimage" src="${pageContext.request.contextPath}/resources/images/header.png" title="Blod til hodet" alt="Blod til hodet">
+        <div class="loggetinnsom">
+            Logget inn som: ${person.name} (<a href="" id="persongruppe">${person.gruppe.name}</a>)
+        </div>
+        <script>
+            $("#persongruppe").click(function(){
+                document.location = '${pageContext.request.contextPath}/velgGruppe';
+                return false;
+            })
+        </script>
     </div>
     <div id="status"></div>
     <div data-role="content">
