@@ -3,7 +3,7 @@
 
 <ul id="aktivitetlist" class="ui-listview" data-role="listview" data-theme="g" data-filter="false">
     <c:forEach var="person" items="${personAndCount}" varStatus="status">
-        <li class="highscore<c:if test="${status.count eq standing}"> onhighscore</c:if> ui-li ui-li-static ui-body-g"><span class="position">${status.count}</span>${person.key.name}<span class="score"><fmt:formatNumber type="number" maxFractionDigits="1" value="${person.value}" /></span></li>
+        <li class="highscore<c:if test="${status.count eq standing}"> onhighscore</c:if> ui-li ui-li-static ui-body-g"><span class="position">${status.count}</span>${person.key.name}<span class="score"><span class="scorevalue"><fmt:formatNumber type="number" maxFractionDigits="1" value="${person.value}" /></span></span></li>
     </c:forEach>
 </ul>
 <c:if test="${standing ne null and standing ge 10}">

@@ -27,18 +27,42 @@ a .scoreIncrement {
 }
 
 .score {
-    background: url("../images/redstar.png") no-repeat;
-    background-size: 100%;
     min-width: 40px;
     min-height: 40px;
     padding-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
     text-align: center;
     color: #ffffff;
-    font-size: 0.6em;
+    float: right;
+    position: relative;
 }
 
-.score{
-    float: right;
+.scorevalue {
+    background: url("../images/redstar.png") no-repeat -2px;
+    background-size: 100%;
+    padding: 15px;
+}
+
+li.highscore{
+    clear: both;
+    font-size: 150%;
+}
+
+.onhighscore {
+    color: #ffffff;
+    background-color: #c43e14;
+
+}
+
+.onhighscore .score .scorevalue{
+    color: #c43e14;
+    background: url("../images/whitestar.png") no-repeat;
+    background-size: 100%;
+}
+
+.ui-li .ui-btn-text a.ui-link-inherit.aktivitet {
+    overflow: visible;
 }
 
 #velggruppe {
@@ -54,22 +78,6 @@ a .scoreIncrement {
 
 ul,li {
     list-style-type: none;
-}
-
-li.highscore{
-    clear: both;
-}
-
-.onhighscore {
-    color: #ffffff;
-    background-color: #c43e14;
-
-}
-
-.onhighscore .score{
-    color: #c43e14;
-    background: url("../images/whitestar.png") no-repeat;
-    background-size: 100%;
 }
 
 .position {

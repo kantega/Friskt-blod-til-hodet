@@ -29,6 +29,13 @@
             }
         }
     </script>
+    <style type="text/css">
+        @-moz-document url-prefix(){
+            .score {
+                top: -40px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -50,7 +57,7 @@
         <ul id="aktivitetlist" data-role="listview" data-theme="g" data-filter="false">
             <c:forEach var="aktivitet" items="${aktivitetAndCount}">
                 <li>
-                    <a name="${aktivitet.key.id}" class="aktivitet" id="${aktivitet.key.id}" href="${pageContext.request.contextPath}/aktiviteter/${aktivitet.key.id}" data-icon="aktivitet-score" data-iconpos="right">${aktivitet.key.name}<span class="score" id="${aktivitet.key.id}">${aktivitet.value}</span></a>
+                    <a name="${aktivitet.key.id}" class="aktivitet" id="${aktivitet.key.id}" href="${pageContext.request.contextPath}/aktiviteter/${aktivitet.key.id}" data-icon="aktivitet-score" data-iconpos="right">${aktivitet.key.name}<span class="score" id="${aktivitet.key.id}"><span class="scorevalue">${aktivitet.value}</span></span></a>
                 </li>
             </c:forEach>
         </ul>
